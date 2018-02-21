@@ -14,3 +14,12 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
++### STS ###
++.apt_generated
++.classpath
++.factorypath
++.project
++.settings
++.springBeans
++
