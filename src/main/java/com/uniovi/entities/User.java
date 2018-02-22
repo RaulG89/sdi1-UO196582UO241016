@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -25,6 +26,7 @@ public class User {
 	private String email;
 	@NotNull
 	private String password;
+	@Transient
 	private String passwordConfirm;
 	
 	@OneToMany
@@ -32,9 +34,8 @@ public class User {
 	@OneToMany
 	private Set<FriendRequest> friendRequests;
 	
-	public User(long id, String name, String lastName, String email, String password) {
+	public User(String name, String lastName, String email, String password) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
