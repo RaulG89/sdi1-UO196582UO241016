@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,9 +14,9 @@ public class FriendRequest {
 	@Id
 	@GeneratedValue
 	private long id;
-	@Column(unique = true)
+	@ManyToOne
 	private User requestingUser;
-	@Column(unique = true)
+	@ManyToOne
 	private User requestedUser;
 	
 	public FriendRequest() {
