@@ -23,3 +23,6 @@ nbdist/
 +.settings
 +.springBeans
 +
+
+### DATABASE ###
+hsqldb-2.4.0/
