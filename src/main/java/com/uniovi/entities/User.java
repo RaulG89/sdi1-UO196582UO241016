@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -34,6 +35,17 @@ public class User {
 	@OneToMany
 	private Set<FriendRequest> friendRequests;
 	
+	@ManyToOne
+	private Role role;
+	
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	public User(String name, String lastName, String email, String password) {
 		super();
 		this.name = name;

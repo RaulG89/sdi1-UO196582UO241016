@@ -1,7 +1,11 @@
 package com.uniovi.controllers;
 
-import org.aspectj.weaver.SignatureUtils;
+import java.util.LinkedList;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,6 +56,15 @@ public class UsersController {
 		usersService.addUser(user);
 		securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
 		return "redirect:home";
+	}
+	
+	@RequestMapping("/user/list")
+	public String getListado(Model model, Pageable pageable) {
+		Page<User> users = new PageImpl<User>(new LinkedList<User>());
+		users = usersService.getUsers(pageable);
+		model.addAttribute("usersList", users.getContent());
+		model.addAttribute("page", users);
+		return "user/list";
 	}
 
 }
