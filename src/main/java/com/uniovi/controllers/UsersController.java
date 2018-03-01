@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.uniovi.entities.User;
 import com.uniovi.services.SecurityService;
@@ -33,7 +34,7 @@ public class UsersController {
 	}
 	
 	@RequestMapping(value="/home")
-	public String home(Model model) {
+	public String home(Model model) {		
 		return "home";
 	}
 	
