@@ -26,24 +26,38 @@ public class InsertSampleDataService {
 //		user1.setRole(roleService.getRoleByType("ROLE_REGISTERED"));
 		usersService.addUser(user1);
 		User user2 = new User("Marcos","Ruiz","yeyas@gmail.com","123456");
+<<<<<<< HEAD
 //		user2.setRole(new Role("ROLE_ADMIN"));
 		usersService.addUser(user2);
 		User user3 = new User("Nacho","Escribano","nachas@gmail.com","123456");
 //		user3.setRole(new Role("ROLE_REGISTERED"));
+=======
+		user2.setRole(roleService.getRoleByType("ROLE_ADMIN"));
+		usersService.addUser(user2);
+		User user3 = new User("Nacho","Escribano","nachas@gmail.com","123456");
+		user3.setRole(roleService.getRoleByType("ROLE_REGISTERED"));
+>>>>>>> 3a2acbb439f159e43607fe4a3b582a9160bb0b5d
 		usersService.addUser(user3);
 		User user4 = new User("Pablo","Rubio","pablas@gmail.com","123456");
+		user4.setRole(roleService.getRoleByType("ROLE_REGISTERED"));
 		usersService.addUser(user4);
 		User user5 = new User("Martin","Mozalbete","pacharanman@gmail.com","123456");
+		user5.setRole(roleService.getRoleByType("ROLE_REGISTERED"));
 		usersService.addUser(user5);
 		User user6 = new User("Moisés","Chacón","moisas@gmail.com","123456");
+		user6.setRole(roleService.getRoleByType("ROLE_REGISTERED"));
 		usersService.addUser(user6);
 		User user7 = new User("Borja","Muiña","termometro@gmail.com","123456");
+		user7.setRole(roleService.getRoleByType("ROLE_REGISTERED"));
 		usersService.addUser(user7);
 		User user8 = new User("Aurora","López","pocito@gmail.com","123456");
+		user8.setRole(roleService.getRoleByType("ROLE_REGISTERED"));
 		usersService.addUser(user8);
 		User user9 = new User("Anahí","Fulgueiras","nanani@gmail.com","123456");
+		user9.setRole(roleService.getRoleByType("ROLE_REGISTERED"));
 		usersService.addUser(user9);
 		User user10 = new User("Ana","Ponfe","anaponfe@gmail.com","123456");
+		user10.setRole(roleService.getRoleByType("ROLE_REGISTERED"));
 		usersService.addUser(user10);
 		
 	}
