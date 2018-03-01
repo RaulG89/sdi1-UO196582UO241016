@@ -38,7 +38,7 @@ public class UsersController {
 	}
 	
 	@RequestMapping(value="/home")
-	public String home(Model model) {		
+	public String home(Model model) {
 		return "home";
 	}
 	
@@ -60,9 +60,13 @@ public class UsersController {
 	}
 	
 	@RequestMapping("/user/list")
-	public String getListado(Model model, Pageable pageable) {
+	public String getListado(Model model, Pageable pageable,
+			@RequestParam(value = "", required=false) String searchText) {
 		Page<User> users = new PageImpl<User>(new LinkedList<User>());
-		users = usersService.getUsers(pageable);
+		if(searchText != null && !searchText.isEmpty())
+			users = usersService.searchUserByNameAndEmail(searchText, pageable);
+		else
+			users = usersService.getUsers(pageable);
 		model.addAttribute("usersList", users.getContent());
 		model.addAttribute("page", users);
 		return "user/list";

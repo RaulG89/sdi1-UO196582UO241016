@@ -38,14 +38,6 @@ public class User {
 	@ManyToOne
 	private Role role;
 	
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
 	public User(String name, String lastName, String email, String password) {
 		super();
 		this.name = name;
@@ -55,6 +47,14 @@ public class User {
 	}
 	
 	public User() {}
+	
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 	public long getId() {
 		return id;

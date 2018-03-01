@@ -9,6 +9,14 @@
 			Usuario Autenticado como : <b th:inline="text">
 				[[${#httpServletRequest.remoteUser}]] </b>
 		</p>
+		<h4>Encuentra usuarios registrados</h4>
+		<form class="navbar-form" action="/user/list">
+			<div class="form-group">
+				<input name="searchText" type="text" class="form-control" size="50"
+					placeholder="Buscar por nombre o email de usuario">
+			</div>
+			<button type="submit" class="btn btn-default">Buscar</button>
+		</form>
 	</div>
 	<footer th:replace="fragments/footer" />
 </body>

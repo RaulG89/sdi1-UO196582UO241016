@@ -18,6 +18,6 @@ public interface UsersRepository extends CrudRepository<User, Long>{
 			+ "FROM User u "
 			+ "WHERE (LOWER(u.email) LIKE LOWER(?1) "
 			+ "OR LOWER(u.name) LIKE LOWER(?1))")
-	List<User> searchByNameAndEmail(String searchText);
+	Page<User> searchByNameAndEmail(String searchText, Pageable pageable);
 
 }
