@@ -1,6 +1,5 @@
 package com.uniovi.entities;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,9 +22,15 @@ public class FriendRequest {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FriendRequest(long id, User requestingUser, User requestedUser) {
+//	public FriendRequest(long id, User requestingUser, User requestedUser) {
+//		super();
+//		this.id = id;
+//		this.requestingUser = requestingUser;
+//		this.requestedUser = requestedUser;
+//	}
+	
+	public FriendRequest(User requestingUser, User requestedUser) {
 		super();
-		this.id = id;
 		this.requestingUser = requestingUser;
 		this.requestedUser = requestedUser;
 	}

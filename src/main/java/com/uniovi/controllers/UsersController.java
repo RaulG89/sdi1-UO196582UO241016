@@ -1,5 +1,6 @@
 package com.uniovi.controllers;
 
+import java.security.Principal;
 import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,13 +61,16 @@ public class UsersController {
 	}
 	
 	@RequestMapping("/user/list")
-	public String getListado(Model model, Pageable pageable,
+	public String getListado(Model model, Pageable pageable, Principal principal,
 			@RequestParam(value = "", required=false) String searchText) {
+		String email = principal.getName();
+		User loggedInUser = usersService.getUserByEmail(email);
 		Page<User> users = new PageImpl<User>(new LinkedList<User>());
 		if(searchText != null && !searchText.isEmpty())
 			users = usersService.searchUserByNameAndEmail(searchText, pageable);
 		else
 			users = usersService.getUsers(pageable);
+		model.addAttribute("loggedInUser", loggedInUser);
 		model.addAttribute("usersList", users.getContent());
 		model.addAttribute("page", users);
 		return "user/list";
