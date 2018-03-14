@@ -1,8 +1,6 @@
 package com.uniovi.entities;
 
-import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,19 +34,17 @@ public class User {
 	@Transient
 	private String passwordConfirm;
 	
-<<<<<<< HEAD
-	@OneToMany
-	private Set<Friendship> friends;
-=======
 	@OneToMany(mappedBy = "friend")
 	private Set<Friendship> userFriends;
 
 	@OneToMany(mappedBy = "user")
 	private Set<Friendship> userIsFriend;
+
+	@OneToMany(mappedBy= "requestingUser")
+	private Set<FriendRequest> friendRequestsSended;
 	
->>>>>>> EntitiesProblems
-	@OneToMany
-	private Set<FriendRequest> friendRequests;
+	@OneToMany(mappedBy= "requestedUser")
+	private Set<FriendRequest> friendRequestsRecived;
 	
 	@ManyToOne
 	private Role role;
@@ -119,14 +115,6 @@ public class User {
 		this.passwordConfirm = passwordConfirm;
 	}
 
-<<<<<<< HEAD
-	public Set<Friendship> getFriends() {
-		return friends;
-	}
-
-	public void setFriends(Set<Friendship> friends) {
-		this.friends = friends;
-=======
 	public Set<Friendship> getUserFriends() {
 		return userFriends;
 	}	
@@ -141,15 +129,25 @@ public class User {
 
 	public void setUserIsFriend(Set<Friendship> userIsFriend) {
 		this.userIsFriend = userIsFriend;
->>>>>>> EntitiesProblems
 	}
 
-	public Set<FriendRequest> getFriendRequests() {
-		return friendRequests;
+	public Set<FriendRequest> getFriendRequestsSended() {
+		return friendRequestsSended;
 	}
 
-	public void setFriendRequests(Set<FriendRequest> friendRequests) {
-		this.friendRequests = friendRequests;
+	public void setFriendRequestsSended(Set<FriendRequest> friendRequestsSended) {
+		this.friendRequestsSended = friendRequestsSended;
 	}
 
+	public Set<FriendRequest> getFriendRequestsRecived() {
+		return friendRequestsRecived;
+	}
+
+	public void setFriendRequestsRecived(Set<FriendRequest> friendRequestsRecived) {
+		this.friendRequestsRecived = friendRequestsRecived;
+	}
+
+	
+
+	
 }

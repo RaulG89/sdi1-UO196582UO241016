@@ -13,8 +13,10 @@ public class FriendRequest {
 	@Id
 	@GeneratedValue
 	private long id;
+	
 	@ManyToOne
 	private User requestingUser;
+	
 	@ManyToOne
 	private User requestedUser;
 	

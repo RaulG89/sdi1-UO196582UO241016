@@ -21,7 +21,7 @@ public class FriendshipService {
 	}
 
 	public Page<Friendship> findByUser(Pageable pageable, User loggedInUser) {
-		return friendshipRepository.findByUser1(pageable, loggedInUser);
+		return friendshipRepository.findByUser(pageable, loggedInUser);
 	}
 
 	

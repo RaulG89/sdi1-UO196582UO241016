@@ -1,46 +1,51 @@
 package com.uniovi.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 
 @Entity
-@IdClass(FriendKey.class)
 public class Friendship {
 	
 	@Id
+	@GeneratedValue
+	long id;
+	
 	@ManyToOne
-	private User user1;
-	@Id
+	private User user;
+
 	@ManyToOne
-	private User user2;
+	private User friend;
 	
 	public Friendship() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Friendship(User user1, User user2) {
+	public Friendship(User user, User friend) {
 		super();
-		this.user1 = user1;
-		this.user2 = user2;
+		this.user = user;
+		this.friend = friend;
 	}
 
-	public User getUser1() {
-		return user1;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUser1(User user1) {
-		this.user1 = user1;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public User getUser2() {
-		return user2;
+	public User getFriend() {
+		return friend;
 	}
 
-	public void setUser2(User user2) {
-		this.user2 = user2;
+	public void setFriend(User friend) {
+		this.friend = friend;
 	}
+
+
+
 	
 	
 
