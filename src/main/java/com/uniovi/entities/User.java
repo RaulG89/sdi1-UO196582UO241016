@@ -31,7 +31,7 @@ public class User {
 	private String passwordConfirm;
 	
 	@OneToMany
-	private Set<Friend> friends;
+	private Set<Friendship> friends;
 	@OneToMany
 	private Set<FriendRequest> friendRequests;
 	
@@ -104,11 +104,11 @@ public class User {
 		this.passwordConfirm = passwordConfirm;
 	}
 
-	public Set<Friend> getFriends() {
+	public Set<Friendship> getFriends() {
 		return friends;
 	}
 
-	public void setFriends(Set<Friend> friends) {
+	public void setFriends(Set<Friendship> friends) {
 		this.friends = friends;
 	}
 

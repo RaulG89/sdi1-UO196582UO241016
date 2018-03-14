@@ -13,6 +13,10 @@
 				<li><a href="/">Home</a></li>
 				<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
 					href="/user/list">Ver Usuarios</a></li>
+				<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
+					href="/user/friendRequests">Ver Peticiones</a></li>
+					<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
+					href="/user/friends">Ver Amigos</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown"><a id="btnLanguage" href=" #"
@@ -32,10 +36,12 @@
 								th:text="#{language.es}">Español</span>
 						</a></li>
 					</ul></li>
-				<li sec:authorize="!isAuthenticated()"><a href="/signup" th:text="#{signup.message}"> <span
+				<li sec:authorize="!isAuthenticated()"><a href="/signup"
+					th:text="#{signup.message}"> <span
 						class="glyphicon glyphicon-user"></span> Registrate
 				</a></li>
-				<li sec:authorize="!isAuthenticated()"><a href="/login" th:text="#{login.message}"> <span
+				<li sec:authorize="!isAuthenticated()"><a href="/login"
+					th:text="#{login.message}"> <span
 						class="glyphicon glyphicon-log-in"></span> Identifícate
 				</a></li>
 				<li sec:authorize="isAuthenticated()"><a href="/logout"> <span

@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 @IdClass(FriendKey.class)
-public class Friend {
+public class Friendship {
 	
 	@Id
 	@ManyToOne
@@ -16,11 +16,11 @@ public class Friend {
 	@ManyToOne
 	private User user2;
 	
-	public Friend() {
+	public Friendship() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Friend(User user1, User user2) {
+	public Friendship(User user1, User user2) {
 		super();
 		this.user1 = user1;
 		this.user2 = user2;
