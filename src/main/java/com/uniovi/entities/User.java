@@ -41,10 +41,10 @@ public class User {
 	private Set<Friendship> userIsFriend;
 
 	@OneToMany(mappedBy= "requestingUser")
-	private Set<FriendRequest> friendRequestsSended;
+	private Set<FriendRequest> friendRequestsSent;
 	
 	@OneToMany(mappedBy= "requestedUser")
-	private Set<FriendRequest> friendRequestsRecived;
+	private Set<FriendRequest> friendRequestsReceived;
 	
 	@ManyToOne
 	private Role role;
@@ -131,20 +131,20 @@ public class User {
 		this.userIsFriend = userIsFriend;
 	}
 
-	public Set<FriendRequest> getFriendRequestsSended() {
-		return friendRequestsSended;
+	public Set<FriendRequest> getFriendRequestsSent() {
+		return friendRequestsSent;
 	}
 
-	public void setFriendRequestsSended(Set<FriendRequest> friendRequestsSended) {
-		this.friendRequestsSended = friendRequestsSended;
+	public void setFriendRequestsSent(Set<FriendRequest> friendRequestsSent) {
+		this.friendRequestsSent = friendRequestsSent;
 	}
 
-	public Set<FriendRequest> getFriendRequestsRecived() {
-		return friendRequestsRecived;
+	public Set<FriendRequest> getFriendRequestsReceived() {
+		return friendRequestsReceived;
 	}
 
-	public void setFriendRequestsRecived(Set<FriendRequest> friendRequestsRecived) {
-		this.friendRequestsRecived = friendRequestsRecived;
+	public void setFriendRequestsReceived(Set<FriendRequest> friendRequestsReceived) {
+		this.friendRequestsReceived = friendRequestsReceived;
 	}
 
 	
