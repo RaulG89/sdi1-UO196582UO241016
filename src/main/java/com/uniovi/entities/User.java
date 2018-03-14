@@ -1,5 +1,6 @@
 package com.uniovi.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -19,19 +20,28 @@ public class User {
 	@Id
 	@GeneratedValue
 	private long id;
+	
 	@NotNull
 	private String name;
+	
 	private String lastName;
+	
 	@NotNull
 	@Column(unique = true)
 	private String email;
+	
 	@NotNull
 	private String password;
+	
 	@Transient
 	private String passwordConfirm;
 	
-	@OneToMany
-	private Set<Friend> friends;
+	@OneToMany(mappedBy = "friend")
+	private Set<Friendship> userFriends;
+
+	@OneToMany(mappedBy = "user")
+	private Set<Friendship> userIsFriend;
+	
 	@OneToMany
 	private Set<FriendRequest> friendRequests;
 	
@@ -104,12 +114,20 @@ public class User {
 		this.passwordConfirm = passwordConfirm;
 	}
 
-	public Set<Friend> getFriends() {
-		return friends;
+	public Set<Friendship> getUserFriends() {
+		return userFriends;
+	}	
+	
+	public void setUserFriends(Set<Friendship> userFriends) {
+		this.userFriends = userFriends;
 	}
 
-	public void setFriends(Set<Friend> friends) {
-		this.friends = friends;
+	public Set<Friendship> getUserIsFriend() {
+		return userIsFriend;
+	}
+
+	public void setUserIsFriend(Set<Friendship> userIsFriend) {
+		this.userIsFriend = userIsFriend;
 	}
 
 	public Set<FriendRequest> getFriendRequests() {
