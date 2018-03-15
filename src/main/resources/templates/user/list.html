@@ -39,6 +39,11 @@
 							<button type="submit"
 								th:if="${request.requestingUser.id} == ${user.id}">Aceptar</button>
 						</td>
+						<td th:each="userNotFriend : ${usersNotFriends}">
+							<!-- <button type="submit" th:if="request.requestedUser.id == user.id">Cancelar</button> -->
+							<button type="submit"
+								th:if="${userNotFriend.id} == ${user.id}">Agregar amigo</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>

@@ -2,6 +2,7 @@ package com.uniovi.controllers;
 
 import java.security.Principal;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -81,6 +82,8 @@ public class UsersController {
 			users = usersService.searchUserByNameAndEmail(searchText, pageable);
 		else
 			users = usersService.getUsers(pageable);
+		List<User> usersNotFriends = usersService.searchNotFriendsNorRequestedUsers(loggedInUser);
+		model.addAttribute("usersNotFriends", usersNotFriends);
 		model.addAttribute("loggedInUser", loggedInUser);
 		model.addAttribute("usersList", users.getContent());
 		model.addAttribute("page", users);

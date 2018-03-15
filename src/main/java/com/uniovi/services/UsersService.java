@@ -1,5 +1,7 @@
 package com.uniovi.services;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,10 @@ public class UsersService {
 	
 	public Page<User> searchUserByNameAndEmail(String searchText, Pageable pageable){		 		
 		return usersRepository.searchByNameAndEmail("%"+searchText+"%", pageable);
+	}
+	
+	public List<User> searchNotFriendsNorRequestedUsers(User user){
+		return usersRepository.searchNotFriendsNorRequestedUsers(user);
 	}
 
 }
