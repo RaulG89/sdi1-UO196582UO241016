@@ -19,5 +19,26 @@ public interface UsersRepository extends CrudRepository<User, Long>{
 			+ "WHERE (LOWER(u.email) LIKE LOWER(?1) "
 			+ "OR LOWER(u.name) LIKE LOWER(?1))")
 	Page<User> searchByNameAndEmail(String searchText, Pageable pageable);
+	
+	@Query("SELECT u "
+			+ "FROM User u "
+			+ "WHERE u NOT IN ( "
+			+ "SELECT f.friend "
+			+ "FROM Friendship f "
+			+ "WHERE f.user = ?1) "
+			+ "AND u NOT IN ( "
+			+ "SELECT f.user "
+			+ "FROM Friendship f "
+			+ "WHERE f.friend = ?1) "
+			+ "AND u NOT IN ( "
+			+ "SELECT r.requestedUser "
+			+ "FROM FriendRequest r "
+			+ "WHERE r.requestingUser = ?1) "
+			+ "AND u NOT IN ( "
+			+ "SELECT r.requestingUser "
+			+ "FROM FriendRequest r "
+			+ "WHERE r.requestedUser = ?1) "
+			+ "AND u <> ?1")
+	List<User> searchNotFriendsNorRequestedUsers(User user);
 
 }
