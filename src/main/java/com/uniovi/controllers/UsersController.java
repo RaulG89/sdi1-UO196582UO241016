@@ -114,7 +114,6 @@ public class UsersController {
 		String email = principal.getName();
 		User loggedInUser = usersService.getUserByEmail(email);
 		Page<Friendship> friends = new PageImpl<Friendship>(new LinkedList<Friendship>());
-		// TODO La movida es que no se sabe cual
 		friends = friendshipService.findByUser(pageable, loggedInUser);
 		model.addAttribute("loggedInUser", loggedInUser);
 		model.addAttribute("friends", friends.getContent());

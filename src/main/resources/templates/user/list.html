@@ -32,12 +32,10 @@
 						<td th:text="${user.lastName}">Apellidos del alumno</td>
 						<td th:text="${user.email}">ejemplo@mail.com</td>
 						<td th:each="request : ${loggedInUser.friendRequestsSent}">
-							<!-- <button type="submit" th:if="request.requestedUser.id == user.id">Cancelar</button> -->
 							<button type="submit"
 								th:if="${request.requestedUser.id} == ${user.id}">Cancelar</button>
 						</td>
 						<td th:each="request : ${loggedInUser.friendRequestsReceived}">
-							<!-- <button type="submit" th:if="request.requestedUser.id == user.id">Cancelar</button> -->
 							<button type="submit"
 								th:if="${request.requestingUser.id} == ${user.id}">Aceptar</button>
 						</td>
