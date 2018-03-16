@@ -72,6 +72,12 @@
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
 		</dependency>
+		
+		<!-- Logging Dependency -->
+		<dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -82,6 +88,23 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<developers>
+		<developer>
+			<id>MarcosRV87</id>
+			<name>Marcos Ruíz Villamea</name>
+			<email></email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>	
+		<developer>
+			<id>RaulG89</id>
+			<name>Raúl Gómez Pérez</name>
+			<email>infonocturno@gmail.com</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
 
 </project>

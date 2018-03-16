@@ -31,7 +31,41 @@
 						<td th:text="${user.name}">Nombre del alumno</td>
 						<td th:text="${user.lastName}">Apellidos del alumno</td>
 						<td th:text="${user.email}">ejemplo@mail.com</td>
-						<td th:each="request : ${loggedInUser.friendRequestsSent}">
+						<!--  ESTA FUE LA V2  -->
+<!-- 						<td>
+							<span th:each="request : ${loggedInUser.friendRequestsSent}"
+									th:if="${request.requestedUser.id} == ${user.id}">
+								<button type="submit">Cancelar</button>
+							</span>
+							<span th:each="request : ${loggedInUser.friendRequestsReceived}"
+									th:if="${request.requestingUser.id} == ${user.id}">
+								<button type="submit">Aceptar</button>
+							</span>
+							<span th:each="userNotFriend : ${usersNotFriends}"
+									th:if="${userNotFriend.id} == ${user.id}">
+								<button type="submit">Agregar amigo</button>
+							</span>
+						</td> -->
+						
+						<!--  ESTA FUNCIONA CHACHI  -->
+						<td th:each="request : ${loggedInUser.friendRequestsSent}"
+							th:if="${request.requestedUser.id} == ${user.id}"
+							name="celdaCancelaPeticion">
+								<button type="submit">Cancelar</button>
+						</td>
+						<td th:each="request : ${loggedInUser.friendRequestsReceived}"
+							th:if="${request.requestingUser.id} == ${user.id}"
+							name="celdaAceptaPeticion">
+								<button type="submit">Aceptar</button>
+						</td>
+						<td th:each="userNotFriend : ${usersNotFriends}"
+							th:if="${userNotFriend.id} == ${user.id}"
+							name="celdaAgregaAmigo">
+								<button type="submit">Agregar amigo</button>
+						</td>
+						
+						<!--  ESTA FUE LA V1 PREVIA  -->
+						<!-- <td th:each="request : ${loggedInUser.friendRequestsSent}">
 							<button type="submit"
 								th:if="${request.requestedUser.id} == ${user.id}">Cancelar</button>
 						</td>
@@ -40,10 +74,10 @@
 								th:if="${request.requestingUser.id} == ${user.id}">Aceptar</button>
 						</td>
 						<td th:each="userNotFriend : ${usersNotFriends}">
-							<!-- <button type="submit" th:if="request.requestedUser.id == user.id">Cancelar</button> -->
+							<button type="submit" th:if="request.requestedUser.id == user.id">Cancelar</button>
 							<button type="submit"
 								th:if="${userNotFriend.id} == ${user.id}">Agregar amigo</button>
-						</td>
+						</td> -->
 					</tr>
 				</tbody>
 			</table>
