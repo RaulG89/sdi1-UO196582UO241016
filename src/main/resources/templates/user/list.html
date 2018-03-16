@@ -17,7 +17,8 @@
 		<p>Los usuarios que actualmente figuran en el sistema son los
 			siguientes:</p>
 		<div class="table-responsive">
-			<table class="table table-hover">
+			<table class="table table-hover" th:fragment="tableUsers"
+				id="tableUsers">
 				<thead>
 					<tr>
 						<th>Nombre</th>
@@ -51,18 +52,34 @@
 						<td th:each="request : ${loggedInUser.friendRequestsSent}"
 							th:if="${request.requestedUser.id} == ${user.id}"
 							name="celdaCancelaPeticion">
-								<button type="submit">Cancelar</button>
+								<button type="submit" class="btn btn-warning">Cancelar</button>
 						</td>
 						<td th:each="request : ${loggedInUser.friendRequestsReceived}"
 							th:if="${request.requestingUser.id} == ${user.id}"
 							name="celdaAceptaPeticion">
-								<button type="submit">Aceptar</button>
+								<button type="submit" class="btn btn-success">Aceptar</button>
 						</td>
 						<td th:each="userNotFriend : ${usersNotFriends}"
 							th:if="${userNotFriend.id} == ${user.id}"
 							name="celdaAgregaAmigo">
-								<button type="submit">Agregar amigo</button>
+								<button type="submit" th:id="${'friendRequestButton'+user.id}" class="btn btn-primary">Agregar</button>
+								<script th:inline="javascript">
+                                /*<![CDATA[*/
+                                    $( "#friendRequestButton[[${user.id}]]").click(function(){
+                                    	$.get("/user/sendFriendRequest/[[${user.id}]]",function(data) {
+											var numberPage = [[${param.page}]];
+											var urlUpdate = '/user/list/update';
+											if ( numberPage != null ){
+												urlUpdate += "?page="+numberPage[0];
+											} 
+											$("#tableUsers").load(urlUpdate);
+										});
+                                    });
+                                /*]]>*/
+                            </script>
 						</td>
+						
+						<!-- $("#tableUsers").load('/user/sendFriendRequest/[[${user.id}]]'); -->
 						
 						<!--  ESTA FUE LA V1 PREVIA  -->
 						<!-- <td th:each="request : ${loggedInUser.friendRequestsSent}">

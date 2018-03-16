@@ -123,5 +123,27 @@ public class UsersController {
 		model.addAttribute("page", friends);
 		return "user/friends";
 	}
+	
+	@RequestMapping("/user/sendFriendRequest/{id}")
+	public String sendFriendRequest(Model model, @PathVariable Long id, Principal principal) {
+		String email = principal.getName();
+		User loggedInUser = usersService.getUserByEmail(email);
+		User requestedUser = usersService.getUser(id);
+		friendRequestService.addFriendRequest(loggedInUser,requestedUser);
+		return "redirect:/user/list";
+	}
+	
+	@RequestMapping("/user/list/update")
+	public String updateList(Model model, Pageable pageable, Principal principal) {
+		String email = principal.getName();
+		User loggedInUser = usersService.getUserByEmail(email);
+		Page<User> users = new PageImpl<User>(new LinkedList<User>());
+		users = usersService.getUsers(pageable);
+		List<User> usersNotFriends = usersService.searchNotFriendsNorRequestedUsers(loggedInUser);
+		model.addAttribute("usersNotFriends", usersNotFriends);
+		model.addAttribute("loggedInUser", loggedInUser);
+		model.addAttribute("usersList", users.getContent());
+		return "user/list :: tableUsers";
+	}
 
 }

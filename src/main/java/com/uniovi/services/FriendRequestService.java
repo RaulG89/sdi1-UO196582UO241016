@@ -15,9 +15,8 @@ public class FriendRequestService {
 	@Autowired
 	FriendRequestRepository friendRequestRepository;
 	
-	public void addFriendRequest(FriendRequest friendRequest) {
-		
-		friendRequestRepository.save(friendRequest);
+	public void addFriendRequest(User requestingUser, User requestedUser) {	
+		friendRequestRepository.save(new FriendRequest(requestingUser,requestedUser));
 	}
 	
 	public void deleteFriendRequest(User requestingUser, User requestedUser) {

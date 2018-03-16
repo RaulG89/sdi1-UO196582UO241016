@@ -61,10 +61,10 @@ public class InsertSampleDataService {
 		usersService.addUser(user10);
 		
 		//FRIEND REQUESTS
-		friendRequestService.addFriendRequest(new FriendRequest(user3, user1));
-		friendRequestService.addFriendRequest(new FriendRequest(user1, user5));
-		friendRequestService.addFriendRequest(new FriendRequest(user1, user6));
-		friendRequestService.addFriendRequest(new FriendRequest(user4, user1));
+		friendRequestService.addFriendRequest(user3, user1);
+		friendRequestService.addFriendRequest(user1, user5);
+		friendRequestService.addFriendRequest(user1, user6);
+		friendRequestService.addFriendRequest(user4, user1);
 		
 		//FRIENDSHIPS
 //		friendshipService.addFriendship(user1, user2);
