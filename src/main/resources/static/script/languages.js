@@ -5,7 +5,6 @@ $(document).ready(function() {
 		var languageSelectedValue = $(this).attr("value");
 		$("#btnLanguage").text(languageSelectedText);
 		window.location.replace('?lang=' + languageSelectedValue);
-		alert("MIAU");
 		return false;
 	});
 });
