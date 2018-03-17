@@ -21,8 +21,8 @@ public class SocialNetworkTests {
 
 	// En Windows (Debe ser la versión 46.0 y desactivar las actualizacioens
 	// automáticas)):
-	// static String PathFirefox = "C:\\Path\\FirefoxPortable.exe";
-	static String PathFirefox = "C:\\Users\\Marcos\\Downloads\\Firefox46.win\\FirefoxPortable.exe";
+	static String PathFirefox = "E:\\Clase\\UNIOVI\\5_Quinto_Curso\\SDI\\PL_SDI_5\\Firefox46.0.win\\Firefox46.win\\FirefoxPortable.exe";
+	//static String PathFirefox = "C:\\Users\\Marcos\\Downloads\\Firefox46.win\\FirefoxPortable.exe";
 
 	// Común a Windows y a MACOSX
 	static WebDriver driver = getDriver(PathFirefox);

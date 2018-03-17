@@ -23,6 +23,7 @@ import com.uniovi.entities.Friendship;
 import com.uniovi.entities.User;
 import com.uniovi.services.FriendRequestService;
 import com.uniovi.services.FriendshipService;
+import com.uniovi.services.LoggerService;
 import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
 import com.uniovi.validators.SignUpFormValidator;
@@ -44,6 +45,8 @@ public class UsersController {
 
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
+	
+	private LoggerService logger = new LoggerService(this);
 
 	@RequestMapping(value = "/login")
 	public String login(Model model) {
@@ -68,7 +71,9 @@ public class UsersController {
 			return "signup";
 		}
 		usersService.addUser(user);
+		logger.infoLog("New user was created with Email: " + user.getEmail() + ".");
 		securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
+		logger.infoLog("The user with email: " + user.getEmail() + " has accessed the system.");
 		return "redirect:home";
 	}
 
@@ -87,6 +92,9 @@ public class UsersController {
 		model.addAttribute("loggedInUser", loggedInUser);
 		model.addAttribute("usersList", users.getContent());
 		model.addAttribute("page", users);
+		logger.infoLog("The user with email: " 
+				+ loggedInUser.getEmail() 
+				+ " has listed the users of the system.");
 		return "user/list";
 	}
 
@@ -99,6 +107,9 @@ public class UsersController {
 		model.addAttribute("loggedInUser", loggedInUser);
 		model.addAttribute("friendRequests", friendRequests.getContent());
 		model.addAttribute("page", friendRequests);
+		logger.infoLog("The user with email: " 
+				+ loggedInUser.getEmail() 
+				+ " has listed their friend requests.");
 		return "user/friendrequests";
 	}
 
@@ -109,6 +120,10 @@ public class UsersController {
 		User requestingUser = usersService.getUser(id);
 		friendshipService.addFriendship(requestingUser, loggedInUser);
 		friendRequestService.deleteFriendRequest(requestingUser, loggedInUser);
+		logger.infoLog("The user with email: " 
+				+ loggedInUser.getEmail() 
+				+ " has accepted the friend request of the user with email: " 
+				+ requestingUser.getEmail() + ".");
 		return "redirect:/user/friendRequests";
 	}
 	
@@ -121,6 +136,9 @@ public class UsersController {
 		model.addAttribute("loggedInUser", loggedInUser);
 		model.addAttribute("friends", friends.getContent());
 		model.addAttribute("page", friends);
+		logger.infoLog("The user with email: " 
+				+ loggedInUser.getEmail() 
+				+ " has listed their friend list.");
 		return "user/friends";
 	}
 	
@@ -130,6 +148,10 @@ public class UsersController {
 		User loggedInUser = usersService.getUserByEmail(email);
 		User requestedUser = usersService.getUser(id);
 		friendRequestService.addFriendRequest(loggedInUser,requestedUser);
+		logger.infoLog("The user with email: " 
+				+ loggedInUser.getEmail() 
+				+ " has send friend request to user with email: " 
+				+ requestedUser.getEmail() + ".");
 		return "redirect:/user/list";
 	}
 	
