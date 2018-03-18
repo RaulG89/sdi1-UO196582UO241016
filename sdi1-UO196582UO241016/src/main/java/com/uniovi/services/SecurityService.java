@@ -27,13 +27,18 @@ public class SecurityService {
 	}
 
 	public void autoLogin(String email, String password) {
+
 		UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-		UsernamePasswordAuthenticationToken aToken = new UsernamePasswordAuthenticationToken(userDetails, password,
-				userDetails.getAuthorities());
-		authenticationManager.authenticate(aToken);
-		if (aToken.isAuthenticated()) {
-			SecurityContextHolder.getContext().setAuthentication(aToken);
-			logger.debug(String.format("Auto login %s successfully!", email));
+		if (userDetails != null) {
+			UsernamePasswordAuthenticationToken aToken = new UsernamePasswordAuthenticationToken(userDetails, password,
+					userDetails.getAuthorities());
+			authenticationManager.authenticate(aToken);
+			if (aToken.isAuthenticated()) {
+				SecurityContextHolder.getContext().setAuthentication(aToken);
+				logger.debug(String.format("Auto login %s successfully!", email));
+			}
+		} else {
+			// Mostrar mensaje de error.
 		}
 	}
 }
