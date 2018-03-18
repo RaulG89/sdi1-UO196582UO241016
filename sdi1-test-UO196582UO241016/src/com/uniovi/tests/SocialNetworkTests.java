@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -162,10 +163,37 @@ public class SocialNetworkTests {
 		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
 		// COmprobamos que entramos en la pagina privada
 		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
-		//Rellenamos el campo de busqueda
+		// Rellenamos el campo de busqueda
 		PO_JustLoggedInView.fillSearchText(driver, "Nacho");
-		//Comprobamos que aparece el deseado.
+		// Comprobamos que aparece el deseado.
 		List<WebElement> elementos = PO_View.checkElement(driver, "text", "Nacho");
+	}
+
+	// PR08 [BusUsrInVal] Intento de acceso con URL a la búsqueda de usuarios desde
+	// un usuario no
+	// identificado. Debe producirse un acceso no permitido a vistas privadas.
+	@Test
+	public void BusUsrInVal() {
+		driver.navigate().to("http://localhost:8090/user/list");
+		PO_LoginView.checkLogIn(driver, PO_Properties.getSPANISH());
+	}
+
+	// PRO9 [InvVal] Enviar una invitación de amistad a un usuario de forma valida.
+	@Test
+	public void InvVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		List<WebElement> elementos;
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/user/list')]");
+		elementos.get(0).click();
+		By enlace = By.xpath("//td[contains(text(), 'Marcos')]/following-sibling::*[3]");
+		SeleniumUtils.esperarSegundos(driver, 1);
+		driver.findElement(enlace).click();
+		//Falta la comprobación que ahora aparece el botón Cancelar y no el de agregar.
 	}
 
 }
