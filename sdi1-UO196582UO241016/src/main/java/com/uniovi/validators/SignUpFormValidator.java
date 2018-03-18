@@ -25,8 +25,11 @@ public class SignUpFormValidator implements Validator {
 		if (user.getEmail().length() < 15 || user.getEmail().length() > 30) {
 			errors.rejectValue("email", "Error.signup.email.length");
 		}
-		// TODO Expresión regular para comprobar validez de mail. Añadir al fichero de i18
-		if(!user.getEmail().matches("[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}")) {
+//		// TODO Expresión regular para comprobar validez de mail. Añadir al fichero de i18
+//		if(!user.getEmail().matches("[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}")) {
+//			errors.rejectValue("email", "Error.signup.email.format");
+//		}
+		if(!user.getEmail().matches("[\\w\\d]+@[\\w\\d]+.[\\p{Lower}]{2,4}")) {
 			errors.rejectValue("email", "Error.signup.email.format");
 		}
 		// TODO Añadir al fichero de i18
