@@ -10,13 +10,14 @@
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
-				<li><a href="/">Home</a></li>
+				<li sec:authorize="isAuthenticated()"><a href="/home" th:text="#{home.message}"></a></li>
+				<li sec:authorize="!isAuthenticated()"><a href="/" th:text="#{home.message}"></a></li>
 				<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
-					href="/user/list">Ver Usuarios</a></li>
+					href="/user/list" th:text="#{users.message}"></a></li>
 				<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
-					href="/user/friendRequests">Ver Peticiones</a></li>
+					href="/user/friendRequests" th:text="#{requests.message}"></a></li>
 					<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
-					href="/user/friends">Ver Amigos</a></li>
+					href="/user/friends" th:text="#{friends.message}"></a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown"><a id="btnLanguage" href=" #"
@@ -44,7 +45,7 @@
 					th:text="#{login.message}"> <span
 						class="glyphicon glyphicon-log-in"></span> Identifícate
 				</a></li>
-				<li sec:authorize="isAuthenticated()"><a href="/logout"> <span
+				<li sec:authorize="isAuthenticated()"><a href="/logout" th:text="#{logout.message}"> <span
 						class="glyphicon glyphicon-log-out"></span> Desconectar
 				</a></li>
 			</ul>

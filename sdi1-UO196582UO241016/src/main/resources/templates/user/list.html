@@ -5,25 +5,24 @@
 	<!-- Barra de Navegación superior -->
 	<nav th:replace="fragments/nav" />
 	<div class="container">
-		<h2>Usuarios</h2>
+		<h2 th:text="#{users.message}"></h2>
 		<form class="navbar-form" action="/user/list">
 			<div class="form-group">
 				<input name="searchText" type="text" class="form-control" size="50"
-					placeholder="Buscar por nombre o email de usuario">
+					th:placeholder="#{findusers.placeholder.message}">
 			</div>
 			<button type="submit" class="btn btn-default">Buscar</button>
 		</form>
 
-		<p>Los usuarios que actualmente figuran en el sistema son los
-			siguientes:</p>
+		<p th:text="#{users.info.message}"></p>
 		<div class="table-responsive">
 			<table class="table table-hover" th:fragment="tableUsers"
 				id="tableUsers">
 				<thead>
 					<tr>
-						<th>Nombre</th>
-						<th>Apellidos</th>
-						<th>E-mail</th>
+						<th th:text="#{name.message}">Nombre</th>
+						<th th:text="#{surname.message}">Apellidos</th>
+						<th th:text="#{email.message}">E-mail</th>
 						<th class="col-md-1"></th>
 					</tr>
 				</thead>
@@ -32,37 +31,21 @@
 						<td th:text="${user.name}">Nombre del alumno</td>
 						<td th:text="${user.lastName}">Apellidos del alumno</td>
 						<td th:text="${user.email}">ejemplo@mail.com</td>
-						<!--  ESTA FUE LA V2  -->
-<!-- 						<td>
-							<span th:each="request : ${loggedInUser.friendRequestsSent}"
-									th:if="${request.requestedUser.id} == ${user.id}">
-								<button type="submit">Cancelar</button>
-							</span>
-							<span th:each="request : ${loggedInUser.friendRequestsReceived}"
-									th:if="${request.requestingUser.id} == ${user.id}">
-								<button type="submit">Aceptar</button>
-							</span>
-							<span th:each="userNotFriend : ${usersNotFriends}"
-									th:if="${userNotFriend.id} == ${user.id}">
-								<button type="submit">Agregar amigo</button>
-							</span>
-						</td> -->
 						
-						<!--  ESTA FUNCIONA CHACHI  -->
 						<td th:each="request : ${loggedInUser.friendRequestsSent}"
 							th:if="${request.requestedUser.id} == ${user.id}"
 							name="celdaCancelaPeticion">
-								<button type="submit" class="btn btn-warning">Cancelar</button>
+								<button type="submit" class="btn btn-warning" th:text="#{cancel.message}">Cancelar</button>
 						</td>
 						<td th:each="request : ${loggedInUser.friendRequestsReceived}"
 							th:if="${request.requestingUser.id} == ${user.id}"
 							name="celdaAceptaPeticion">
-								<button type="submit" class="btn btn-success">Aceptar</button>
+								<button type="submit" class="btn btn-success" th:text="#{accept.message}">Aceptar</button>
 						</td>
 						<td th:each="userNotFriend : ${usersNotFriends}"
 							th:if="${userNotFriend.id} == ${user.id}"
 							name="celdaAgregaAmigo">
-								<button type="submit" th:id="${'friendRequestButton'+user.id}" class="btn btn-primary">Agregar</button>
+								<button type="submit" th:id="${'friendRequestButton'+user.id}" class="btn btn-primary" th:text="#{add.message}">Agregar</button>
 								<script th:inline="javascript">
                                 /*<![CDATA[*/
                                     $( "#friendRequestButton[[${user.id}]]").click(function(){
@@ -78,23 +61,6 @@
                                 /*]]>*/
                             </script>
 						</td>
-						
-						<!-- $("#tableUsers").load('/user/sendFriendRequest/[[${user.id}]]'); -->
-						
-						<!--  ESTA FUE LA V1 PREVIA  -->
-						<!-- <td th:each="request : ${loggedInUser.friendRequestsSent}">
-							<button type="submit"
-								th:if="${request.requestedUser.id} == ${user.id}">Cancelar</button>
-						</td>
-						<td th:each="request : ${loggedInUser.friendRequestsReceived}">
-							<button type="submit"
-								th:if="${request.requestingUser.id} == ${user.id}">Aceptar</button>
-						</td>
-						<td th:each="userNotFriend : ${usersNotFriends}">
-							<button type="submit" th:if="request.requestedUser.id == user.id">Cancelar</button>
-							<button type="submit"
-								th:if="${userNotFriend.id} == ${user.id}">Agregar amigo</button>
-						</td> -->
 					</tr>
 				</tbody>
 			</table>

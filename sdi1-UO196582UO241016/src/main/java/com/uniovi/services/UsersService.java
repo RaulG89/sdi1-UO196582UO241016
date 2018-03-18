@@ -20,6 +20,9 @@ public class UsersService {
 	private UsersRepository usersRepository;
 	
 	@Autowired
+	private RolesService rolesService;
+	
+	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@PostConstruct
@@ -37,6 +40,7 @@ public class UsersService {
 
 	public void addUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		user.setRole(rolesService.getRoleByType("ROLE_REGISTERED"));
 		usersRepository.save(user);
 	}
 
