@@ -4,6 +4,12 @@
 <body>
 	<nav th:replace="fragments/nav" />
 	<div class="container" style="text-align: center">
+		<div th:if="${signupAction == 'success'}" class="alert alert-success" >
+  			<strong th:text="#{succesfull.signup.message}">Te has registrado correctamente.</strong> 
+		</div>
+		<div th:if="${loginAction == 'success'}" class="alert alert-success" >
+  			<strong th:text="#{succesfull.signin.message}">Te has logueado correctamente.</strong> 
+		</div>
 		<h3 th:text="#{privatezone.message}">Esta es una zona privada la web</h3>
 		<p th:text="#{authenticateduser.message}">
 			Usuario Autenticado como : 

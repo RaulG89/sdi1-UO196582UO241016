@@ -40,5 +40,8 @@ public interface UsersRepository extends CrudRepository<User, Long>{
 			+ "WHERE r.requestedUser = ?1) "
 			+ "AND u <> ?1")
 	List<User> searchNotFriendsNorRequestedUsers(User user);
+	
+	@Query("SELECT u FROM User u WHERE u <> ?1")
+	Page<User> findAllUsersExceptLoggedInUser(User user, Pageable pageable);
 
 }

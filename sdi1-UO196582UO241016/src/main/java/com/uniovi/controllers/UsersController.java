@@ -73,6 +73,7 @@ public class UsersController {
 		usersService.addUser(user);
 		logger.infoLog("New user was created with Email: " + user.getEmail() + ".");
 		securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
+		model.addAttribute("signupAction", "success");
 		logger.infoLog("The user with email: " + user.getEmail() + " has accessed the system.");
 		return "redirect:home";
 	}
@@ -92,6 +93,7 @@ public class UsersController {
 		model.addAttribute("loggedInUser", loggedInUser);
 		model.addAttribute("usersList", users.getContent());
 		model.addAttribute("page", users);
+		model.addAttribute("listAction", "success");
 		logger.infoLog("The user with email: " 
 				+ loggedInUser.getEmail() 
 				+ " has listed the users of the system.");
