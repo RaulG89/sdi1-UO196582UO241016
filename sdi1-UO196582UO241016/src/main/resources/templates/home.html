@@ -4,25 +4,26 @@
 <body>
 	<nav th:replace="fragments/nav" />
 	<div class="container" style="text-align: center">
-		<div th:if="${signupAction == 'success'}" class="alert alert-success" >
-  			<strong th:text="#{succesfull.signup.message}">Te has registrado correctamente.</strong> 
+		<div th:if="${success}" class="alert alert-success" >
+  			<strong th:text="#{succesfull.signin.message}">Has accedido correctamente.</strong> 
 		</div>
-		<div th:if="${loginAction == 'success'}" class="alert alert-success" >
-  			<strong th:text="#{succesfull.signin.message}">Te has logueado correctamente.</strong> 
-		</div>
-		<h3 th:text="#{privatezone.message}">Esta es una zona privada la web</h3>
-		<p th:text="#{authenticateduser.message}">
-			Usuario Autenticado como : 
+
+		<h3 th:text="#{privatezone.message}">Esta es una zona privada la
+			web</h3>
+		<p th:text="#{authenticateduser.message}">Usuario Autenticado como
+			:</p>
+		<p>
+			<b th:inline="text"> [[${#httpServletRequest.remoteUser}]] </b>
 		</p>
-		<p><b th:inline="text">
-				[[${#httpServletRequest.remoteUser}]] </b></p>
-		<h4 th:text="#{findusers.message}">Encuentra usuarios registrados por nombre o email.</h4>
+		<h4 th:text="#{findusers.message}">Encuentra usuarios registrados
+			por nombre o email.</h4>
 		<form class="navbar-form" action="/user/list">
 			<div class="form-group">
 				<input name="searchText" type="text" class="form-control" size="50"
 					th:placeholder="#{findusers.placeholder.message}">
 			</div>
-			<button type="submit" class="btn btn-default" th:text="#{find.message}">Buscar</button>
+			<button type="submit" class="btn btn-default"
+				th:text="#{find.message}">Buscar</button>
 		</form>
 	</div>
 	<footer th:replace="fragments/footer" />
