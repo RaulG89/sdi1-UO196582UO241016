@@ -2,6 +2,8 @@ package com.uniovi.tests;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -10,10 +12,16 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.uniovi.tests.pageobjects.PO_HomeView;
+import com.uniovi.tests.pageobjects.PO_JustLoggedInView;
+import com.uniovi.tests.pageobjects.PO_LoginView;
 import com.uniovi.tests.pageobjects.PO_Properties;
+import com.uniovi.tests.pageobjects.PO_RegisterView;
+import com.uniovi.tests.pageobjects.PO_View;
+import com.uniovi.tests.util.SeleniumUtils;
 
 //Ordenamos las pruebas por el nombre del método 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -21,8 +29,9 @@ public class SocialNetworkTests {
 
 	// En Windows (Debe ser la versión 46.0 y desactivar las actualizacioens
 	// automáticas)):
-	static String PathFirefox = "E:\\Clase\\UNIOVI\\5_Quinto_Curso\\SDI\\PL_SDI_5\\Firefox46.0.win\\Firefox46.win\\FirefoxPortable.exe";
-	//static String PathFirefox = "C:\\Users\\Marcos\\Downloads\\Firefox46.win\\FirefoxPortable.exe";
+	// static String PathFirefox =
+	// "E:\\Clase\\UNIOVI\\5_Quinto_Curso\\SDI\\PL_SDI_5\\Firefox46.0.win\\Firefox46.win\\FirefoxPortable.exe";
+	static String PathFirefox = "C:\\Users\\Marcos\\Downloads\\Firefox46.win\\FirefoxPortable.exe";
 
 	// Común a Windows y a MACOSX
 	static WebDriver driver = getDriver(PathFirefox);
@@ -80,6 +89,83 @@ public class SocialNetworkTests {
 		PO_HomeView.checkChangeIdiom(driver, "btnSpanish", "btnEnglish", PO_Properties.getSPANISH(),
 				PO_Properties.getENGLISH());
 		// SeleniumUtils.esperarSegundos(driver, 2);
+	}
+
+	// PR01 [RegVal] Registro de Usuario con datos válidos.
+	@Test
+	public void RegVal() {
+		// Vamos al formulario de registro
+		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+		// Rellenamos el formulario.
+		PO_RegisterView.fillForm(driver, "pitina@gmail.com", "Huguín", "De Vegadeo", "123456", "123456");
+		// Comprobamos que entramos en la sección privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+	}
+
+	// PR02 [RegInval] Registro de Usuario con datos inválidos (repetición de
+	// contraseña invalida).
+	@Test
+	public void RegInval() {
+		// Vamos al formulario de registro
+		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+		// Rellenamos el formulario.
+		PO_RegisterView.fillForm(driver, "maricarmen@gmail.com", "Maria", "Del Carmen", "123456", "23456");
+		PO_View.getP();
+		// COmprobamos el error de repassword inválido.
+		PO_RegisterView.checkKey(driver, "Error.signup.passwordConfirm.coincidence", PO_Properties.getSPANISH());
+	}
+
+	// PR03 [InVal] Inicio de sesión con datos válidos.
+	@Test
+	public void InVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada de Alumno
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+	}
+
+	// PR05 [LisUsrVal] Acceso al listado de usuarios desde un usuario en sesión
+	@Test
+	public void LisUsrVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		List<WebElement> elementos;
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/user/list')]");
+		elementos.get(0).click();
+		// Contamos el número de filas de notas
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", PO_View.getTimeout());
+		assertTrue(elementos.size() == 5);
+	}
+
+	// PR06 [LisUsrInVal] Intento de acceso con URL desde un usuario no identificado
+	// al listado de usuarios
+	// desde un usuario en sesión. Debe producirse un acceso no permitido a vistas
+	// privadas.
+	@Test
+	public void LisUsrInVal() {
+		driver.navigate().to("http://localhost:8090/user/list");
+		PO_LoginView.checkLogIn(driver, PO_Properties.getSPANISH());
+	}
+
+	// PR07 [BusUsrVal] Realizar una búsqueda valida en el listado de usuarios desde
+	// un usuario en sesión.
+	@Test
+	public void BusUsrVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		//Rellenamos el campo de busqueda
+		PO_JustLoggedInView.fillSearchText(driver, "Nacho");
+		//Comprobamos que aparece el deseado.
+		List<WebElement> elementos = PO_View.checkElement(driver, "text", "Nacho");
 	}
 
 }
