@@ -67,7 +67,7 @@ public class SocialNetworkTests {
 
 	// PR01 [RegVal] Registro de Usuario con datos válidos.
 	@Test
-	public void RegVal() {
+	public void PR01_RegVal() {
 		// Vamos al formulario de registro
 		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
 		// Rellenamos el formulario.
@@ -79,7 +79,7 @@ public class SocialNetworkTests {
 	// PR02 [RegInval] Registro de Usuario con datos inválidos (repetición de
 	// contraseña invalida).
 	@Test
-	public void RegInval() {
+	public void PR02_RegInval() {
 		// Vamos al formulario de registro
 		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
 		// Rellenamos el formulario.
@@ -91,7 +91,7 @@ public class SocialNetworkTests {
 
 	// PR03 [InVal] Inicio de sesión con datos válidos.
 	@Test
-	public void InVal() {
+	public void PR03_InVal() {
 		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		// Rellenamos el formulario
@@ -103,7 +103,7 @@ public class SocialNetworkTests {
 	// PR04 [InInVal] Inicio de sesión con datos inválidos (usuario no existente en
 	// la aplicación).
 	@Test
-	public void InInVal() {
+	public void PR04_InInVal() {
 		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		// Rellenamos el formulario
@@ -115,7 +115,7 @@ public class SocialNetworkTests {
 
 	// PR05 [LisUsrVal] Acceso al listado de usuarios desde un usuario en sesión
 	@Test
-	public void LisUsrVal() {
+	public void PR05_LisUsrVal() {
 		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		// Rellenamos el formulario
@@ -134,7 +134,7 @@ public class SocialNetworkTests {
 	// desde un usuario en sesión. Debe producirse un acceso no permitido a vistas
 	// privadas.
 	@Test
-	public void LisUsrInVal() {
+	public void PR06_LisUsrInVal() {
 		driver.navigate().to("http://localhost:8090/user/list?searchText=deniedAccess");
 		PO_LoginView.checkLogIn(driver, PO_Properties.getSPANISH());
 	}
@@ -142,7 +142,7 @@ public class SocialNetworkTests {
 	// PR07 [BusUsrVal] Realizar una búsqueda valida en el listado de usuarios desde
 	// un usuario en sesión.
 	@Test
-	public void BusUsrVal() {
+	public void PR07_BusUsrVal() {
 		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		// Rellenamos el formulario
@@ -159,14 +159,14 @@ public class SocialNetworkTests {
 	// un usuario no
 	// identificado. Debe producirse un acceso no permitido a vistas privadas.
 	@Test
-	public void BusUsrInVal() {
+	public void PR08_BusUsrInVal() {
 		driver.navigate().to("http://localhost:8090/user/list");
 		PO_LoginView.checkLogIn(driver, PO_Properties.getSPANISH());
 	}
 
 	// PRO9 [InvVal] Enviar una invitación de amistad a un usuario de forma valida.
 	@Test
-	public void InvVal() {
+	public void PR09_InvVal() {
 		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		// Rellenamos el formulario
@@ -191,7 +191,7 @@ public class SocialNetworkTests {
 	// notificar que ya había sido enviada previamente.
 
 	@Test
-	public void InvInVal() {
+	public void PR10_InvInVal() {
 		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		// Rellenamos el formulario
@@ -201,7 +201,7 @@ public class SocialNetworkTests {
 		List<WebElement> elementos;
 		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/user/list')]");
 		elementos.get(0).click();
-		By enlace = By.xpath("//td[contains(text(), 'Marcos')]/following-sibling::*[3]");
+		By enlace = By.xpath("//td[contains(text(), 'Martin')]/following-sibling::*[3]");
 		SeleniumUtils.esperarSegundos(driver, 1);
 		driver.findElement(enlace).click();
 		// Comprobación que ahora aparece el botón Cancelar y no el de agregar
@@ -213,7 +213,7 @@ public class SocialNetworkTests {
 	// la comprobación con una lista
 	// que al menos tenga una invitación recibida.
 	@Test
-	public void LisInvVal() {
+	public void PR11_LisInvVal() {
 		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		// Rellenamos el formulario
@@ -226,12 +226,13 @@ public class SocialNetworkTests {
 		// Comprobamos que aparecen dos botones de aceptar, por lo tanto, existen 2
 		// peticiones de amistad pendientes.
 		elementos = PO_View.checkElement(driver, "free", "//td/following-sibling::*[1]");
+		int size = elementos.size();
 		assertTrue(elementos.size() == 2);
 	}
 
 	// PR12 [AcepInvVal] Aceptar una invitación recibida
 	@Test
-	public void AcepInvVal() {
+	public void PR12_AcepInvVal() {
 		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		// Rellenamos el formulario
@@ -252,7 +253,7 @@ public class SocialNetworkTests {
 	// con una lista que al menos
 	// tenga un amigo.
 	@Test
-	public void ListAmiVal() {
+	public void PR13_ListAmiVal() {
 		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		// Rellenamos el formulario
