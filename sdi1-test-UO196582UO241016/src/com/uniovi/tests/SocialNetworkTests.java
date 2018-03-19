@@ -149,7 +149,7 @@ public class SocialNetworkTests {
 	// privadas.
 	@Test
 	public void LisUsrInVal() {
-		driver.navigate().to("http://localhost:8090/user/list");
+		driver.navigate().to("http://localhost:8090/user/list?searchText=deniedAccess");
 		PO_LoginView.checkLogIn(driver, PO_Properties.getSPANISH());
 	}
 
@@ -193,7 +193,34 @@ public class SocialNetworkTests {
 		By enlace = By.xpath("//td[contains(text(), 'Marcos')]/following-sibling::*[3]");
 		SeleniumUtils.esperarSegundos(driver, 1);
 		driver.findElement(enlace).click();
-		//Falta la comprobación que ahora aparece el botón Cancelar y no el de agregar.
+		// Comprobación que ahora aparece el botón Cancelar y no el de agregar
+		// en la fila del usuario Marcos.
+		PO_View.checkElement(driver, "id", "cancelRequestButton2");
+	}
+
+	// PR10 [InvInVal] Enviar una invitación de amistad a un usuario al que ya le
+	// habíamos invitado la invitación
+	// previamente. No debería dejarnos enviar la invitación, se podría ocultar el
+	// botón de enviar invitación o
+	// notificar que ya había sido enviada previamente.
+
+	@Test
+	public void InvInVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		List<WebElement> elementos;
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/user/list')]");
+		elementos.get(0).click();
+		By enlace = By.xpath("//td[contains(text(), 'Marcos')]/following-sibling::*[3]");
+		SeleniumUtils.esperarSegundos(driver, 1);
+		driver.findElement(enlace).click();
+		// Comprobación que ahora aparece el botón Cancelar y no el de agregar
+		// en la fila del usuario Marcos, y no nos permite volver a enviar una petición.
+		PO_View.checkElement(driver, "id", "cancelRequestButton2");
 	}
 
 }

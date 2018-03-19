@@ -52,7 +52,9 @@ public class UsersController {
 	private LoggerService logger = new LoggerService(this);
 
 	@RequestMapping(value = "/login")
-	public String login(Model model) {
+	public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+		if(error!=null)
+			model.addAttribute("error", true);
 		return "login";
 	}
 
