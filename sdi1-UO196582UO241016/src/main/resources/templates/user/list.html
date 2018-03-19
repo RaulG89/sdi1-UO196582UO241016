@@ -38,12 +38,12 @@
 						<td th:each="request : ${loggedInUser.friendRequestsSent}"
 							th:if="${request.requestedUser.id} == ${user.id}"
 							name="celdaCancelaPeticion">
-								<button type="submit" class="btn btn-warning" th:text="#{cancel.message}">Cancelar</button>
+								<button type="submit" class="btn btn-warning" th:id="${'cancelRequestButton'+user.id}" th:text="#{cancel.message}">Cancelar</button>
 						</td>
 						<td th:each="request : ${loggedInUser.friendRequestsReceived}"
 							th:if="${request.requestingUser.id} == ${user.id}"
 							name="celdaAceptaPeticion">
-								<button type="submit" class="btn btn-success" th:text="#{accept.message}">Aceptar</button>
+								<button type="submit" class="btn btn-success" th:id="${'acceptRequestButton'+user.id}" th:text="#{accept.message}">Aceptar</button>
 						</td>
 						<td th:each="userNotFriend : ${usersNotFriends}"
 							th:if="${userNotFriend.id} == ${user.id}"
