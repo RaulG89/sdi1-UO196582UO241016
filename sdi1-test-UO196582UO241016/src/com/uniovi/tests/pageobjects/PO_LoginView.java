@@ -27,4 +27,8 @@ public class PO_LoginView extends PO_NavView {
 		SeleniumUtils.EsperaCargaPagina(driver, "text", p.getString("login.message", language), getTimeout());
 	}
 
+	public static void checkInvalidLogIn(WebDriver driver, int language) {
+		SeleniumUtils.EsperaCargaPagina(driver, "text", p.getString("unsuccessfull.signin.message", language), getTimeout());
+	}
+
 }

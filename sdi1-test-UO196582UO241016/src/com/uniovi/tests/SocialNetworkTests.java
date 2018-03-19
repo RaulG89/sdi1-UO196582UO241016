@@ -1,13 +1,12 @@
 package com.uniovi.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -32,8 +31,9 @@ public class SocialNetworkTests {
 	// automáticas)):
 	// static String PathFirefox =
 	// "E:\\Clase\\UNIOVI\\5_Quinto_Curso\\SDI\\PL_SDI_5\\Firefox46.0.win\\Firefox46.win\\FirefoxPortable.exe";
-	static String PathFirefox = "C:\\Users\\UO241016\\Downloads\\PL_SDI_5\\PL_SDI_5\\Firefox46.0.win\\Firefox46.win\\FirefoxPortable.exe";
-	//static String PathFirefox = "C:\\Users\\Marcos\\Downloads\\Firefox46.win\\FirefoxPortable.exe";
+	// static String PathFirefox =
+	// "C:\\Users\\UO241016\\Downloads\\PL_SDI_5\\PL_SDI_5\\Firefox46.0.win\\Firefox46.win\\FirefoxPortable.exe";
+	static String PathFirefox = "C:\\Users\\Marcos\\Downloads\\Firefox46.win\\FirefoxPortable.exe";
 
 	// Común a Windows y a MACOSX
 	static WebDriver driver = getDriver(PathFirefox);
@@ -63,34 +63,6 @@ public class SocialNetworkTests {
 	static public void end() {
 		// Cerramos el navegador al finalizar las pruebas
 		driver.quit();
-	}
-
-	// PR01. Acceder a la página principal
-	@Test
-	public void PR01() {
-		PO_HomeView.checkWelcome(driver, PO_Properties.getSPANISH());
-	}
-
-	// PR02. OPción de navegación. Pinchar en el enlace Registro en la página home
-	@Test
-	public void PR02() {
-		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
-	}
-
-	// PR03. OPción de navegación. Pinchar en el enlace Identificate en la página
-	// home
-	@Test
-	public void PR03() {
-		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-	}
-
-	// PR04. OPción de navegación. Cambio de idioma de Español a Ingles y vuelta a
-	// Español
-	@Test
-	public void PR04() {
-		PO_HomeView.checkChangeIdiom(driver, "btnSpanish", "btnEnglish", PO_Properties.getSPANISH(),
-				PO_Properties.getENGLISH());
-		// SeleniumUtils.esperarSegundos(driver, 2);
 	}
 
 	// PR01 [RegVal] Registro de Usuario con datos válidos.
@@ -126,6 +98,19 @@ public class SocialNetworkTests {
 		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
 		// COmprobamos que entramos en la pagina privada de Alumno
 		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+	}
+
+	// PR04 [InInVal] Inicio de sesión con datos inválidos (usuario no existente en
+	// la aplicación).
+	@Test
+	public void InInVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "12345");
+		// COmprobamos que aparece el error de que las credenciales introducidas son
+		// inválidas.
+		PO_LoginView.checkInvalidLogIn(driver, PO_Properties.getSPANISH());
 	}
 
 	// PR05 [LisUsrVal] Acceso al listado de usuarios desde un usuario en sesión
@@ -167,7 +152,7 @@ public class SocialNetworkTests {
 		// Rellenamos el campo de busqueda
 		PO_JustLoggedInView.fillSearchText(driver, "Nacho");
 		// Comprobamos que aparece el deseado.
-		List<WebElement> elementos = PO_View.checkElement(driver, "text", "Nacho");
+		PO_View.checkElement(driver, "text", "Nacho");
 	}
 
 	// PR08 [BusUsrInVal] Intento de acceso con URL a la búsqueda de usuarios desde
@@ -224,4 +209,60 @@ public class SocialNetworkTests {
 		PO_View.checkElement(driver, "id", "cancelRequestButton2");
 	}
 
+	// PR11 [LisInvVal] Listar las invitaciones recibidas por un usuario, realizar
+	// la comprobación con una lista
+	// que al menos tenga una invitación recibida.
+	@Test
+	public void LisInvVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		List<WebElement> elementos;
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/user/friendRequests')]");
+		elementos.get(0).click();
+		// Comprobamos que aparecen dos botones de aceptar, por lo tanto, existen 2
+		// peticiones de amistad pendientes.
+		elementos = PO_View.checkElement(driver, "free", "//td/following-sibling::*[1]");
+		assertTrue(elementos.size() == 2);
+	}
+
+	// PR12 [AcepInvVal] Aceptar una invitación recibida
+	@Test
+	public void AcepInvVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		List<WebElement> elementos;
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/user/friendRequests')]");
+		elementos.get(0).click();
+		// Hacemos click en el botón de Aceptar la invitación.
+		elementos = PO_View.checkElement(driver, "free", "//td[contains(text(), 'Nacho')]/following-sibling::*[1]");
+		elementos.get(0).click();
+		// Comprobamos que no aparece en la página de peticiones.
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "Nacho", PO_View.getTimeout());
+	}
+
+	// PR13 [ListAmiVal] Listar los amigos de un usuario, realizar la comprobación
+	// con una lista que al menos
+	// tenga un amigo.
+	@Test
+	public void ListAmiVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		List<WebElement> elementos;
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/user/friends')]");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//td[contains(text(), 'Nacho')]");
+		assertTrue(elementos.size() == 1);
+	}
 }
