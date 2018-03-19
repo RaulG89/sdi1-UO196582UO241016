@@ -20,7 +20,7 @@
 				<tbody>
 					<tr th:each="request : ${friendRequests}">
 						<td th:text="${request.requestingUser.name}">Nombre del Requesting User</td>
-						<td><a th:href="${'/user/acceptRequest/' + request.requestingUser.id}">Aceptar</a></td>
+						<td><a class="btn btn-primary" th:href="${'/user/acceptRequest/' + request.requestingUser.id}" role="button">Aceptar</a></td>
 					</tr>
 				</tbody>
 			</table>

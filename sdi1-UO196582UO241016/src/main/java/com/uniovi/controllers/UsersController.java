@@ -90,7 +90,7 @@ public class UsersController {
 		if (searchText != null && !searchText.isEmpty())
 			users = usersService.searchUserByNameAndEmail(searchText, pageable);
 		else
-			users = usersService.getUsers(pageable);
+			users = usersService.getUsers(loggedInUser, pageable);
 		List<User> usersNotFriends = usersService.searchNotFriendsNorRequestedUsers(loggedInUser);
 		model.addAttribute("usersNotFriends", usersNotFriends);
 		model.addAttribute("loggedInUser", loggedInUser);
@@ -165,7 +165,7 @@ public class UsersController {
 		String email = principal.getName();
 		User loggedInUser = usersService.getUserByEmail(email);
 		Page<User> users = new PageImpl<User>(new LinkedList<User>());
-		users = usersService.getUsers(pageable);
+		users = usersService.getUsers(loggedInUser, pageable);
 		List<User> usersNotFriends = usersService.searchNotFriendsNorRequestedUsers(loggedInUser);
 		model.addAttribute("usersNotFriends", usersNotFriends);
 		model.addAttribute("loggedInUser", loggedInUser);

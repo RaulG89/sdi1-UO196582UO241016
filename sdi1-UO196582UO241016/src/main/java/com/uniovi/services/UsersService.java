@@ -29,8 +29,8 @@ public class UsersService {
 	public void init() {
 	}
 
-	public Page<User> getUsers(Pageable pageable) {
-		Page<User> users = usersRepository.findAll(pageable);
+	public Page<User> getUsers(User user, Pageable pageable) {
+		Page<User> users = usersRepository.findAllUsersExceptLoggedInUser(user, pageable);
 		return users;
 	}
 
