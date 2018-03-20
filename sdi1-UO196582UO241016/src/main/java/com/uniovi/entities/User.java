@@ -46,6 +46,9 @@ public class User {
 	@OneToMany(mappedBy= "requestedUser")
 	private Set<FriendRequest> friendRequestsReceived;
 	
+	@OneToMany(mappedBy= "owner")
+	private Set<Publication> publications;
+	
 	@ManyToOne
 	private Role role;
 	
@@ -145,6 +148,14 @@ public class User {
 
 	public void setFriendRequestsReceived(Set<FriendRequest> friendRequestsReceived) {
 		this.friendRequestsReceived = friendRequestsReceived;
+	}
+
+	public Set<Publication> getPublications() {
+		return publications;
+	}
+
+	public void setPublications(Set<Publication> publications) {
+		this.publications = publications;
 	}
 
 	
