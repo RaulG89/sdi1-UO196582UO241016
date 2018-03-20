@@ -5,14 +5,14 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.ManyToOne;
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 
 @Entity
 public class Publication {
 	
 	@Id
 	@GeneratedValue
-	private long id;
+	long id;
 
 	@ManyToOne
 	private User owner;

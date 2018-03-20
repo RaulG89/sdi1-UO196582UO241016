@@ -9,6 +9,6 @@ public interface PublicationRepository extends CrudRepository<Publication, Long>
 
 	List<Publication> findAll();
 	
-	List<Publication> findPublicationByUser(User user);
+	List<Publication> findPublicationByOwner(User user);
 	
 }

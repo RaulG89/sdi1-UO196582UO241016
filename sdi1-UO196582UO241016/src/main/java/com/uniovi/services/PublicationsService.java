@@ -20,7 +20,7 @@ public class PublicationsService {
 	}
 	
 	public List<Publication> getPublicationsByUser(User user){
-		return publicationRepository.findPublicationByUser(user);		
+		return publicationRepository.findPublicationByOwner(user);		
 	}
 	
 
