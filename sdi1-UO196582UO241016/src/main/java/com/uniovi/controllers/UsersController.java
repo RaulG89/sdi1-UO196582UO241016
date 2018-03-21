@@ -38,9 +38,6 @@ public class UsersController {
 	private UsersService usersService;
 
 	@Autowired
-	private FriendRequestService friendRequestService;
-
-	@Autowired
 	FriendshipService friendshipService;
 
 	@Autowired
@@ -103,63 +100,6 @@ public class UsersController {
 				+ loggedInUser.getEmail() 
 				+ " has listed the users of the system.");
 		return "user/list";
-	}
-
-	@RequestMapping("/user/friendRequests")
-	public String getFriendRequests(Model model, Pageable pageable, Principal principal) {
-		String email = principal.getName();
-		User loggedInUser = usersService.getUserByEmail(email);
-		Page<FriendRequest> friendRequests = new PageImpl<FriendRequest>(new LinkedList<FriendRequest>());
-		friendRequests = friendRequestService.getIncomingFriendRequestsByUser(pageable, loggedInUser);
-		model.addAttribute("loggedInUser", loggedInUser);
-		model.addAttribute("friendRequests", friendRequests.getContent());
-		model.addAttribute("page", friendRequests);
-		logger.infoLog("The user with email: " 
-				+ loggedInUser.getEmail() 
-				+ " has listed their friend requests.");
-		return "user/friendrequests";
-	}
-
-	@RequestMapping("/user/acceptRequest/{id}")
-	public String acceptRequest(@PathVariable Long id, Model model, Principal principal) {
-		String email = principal.getName();
-		User loggedInUser = usersService.getUserByEmail(email);
-		User requestingUser = usersService.getUser(id);
-		friendshipService.addFriendship(requestingUser, loggedInUser);
-		friendRequestService.deleteFriendRequest(requestingUser, loggedInUser);
-		logger.infoLog("The user with email: " 
-				+ loggedInUser.getEmail() 
-				+ " has accepted the friend request of the user with email: " 
-				+ requestingUser.getEmail() + ".");
-		return "redirect:/user/friendRequests";
-	}
-	
-	@RequestMapping("/user/friends")
-	public String showFriends(Model model, Pageable pageable, Principal principal) {
-		String email = principal.getName();
-		User loggedInUser = usersService.getUserByEmail(email);
-		Page<Friendship> friends = new PageImpl<Friendship>(new LinkedList<Friendship>());
-		friends = friendshipService.findByUser(pageable, loggedInUser);
-		model.addAttribute("loggedInUser", loggedInUser);
-		model.addAttribute("friends", friends.getContent());
-		model.addAttribute("page", friends);
-		logger.infoLog("The user with email: " 
-				+ loggedInUser.getEmail() 
-				+ " has listed their friend list.");
-		return "user/friends";
-	}
-	
-	@RequestMapping("/user/sendFriendRequest/{id}")
-	public String sendFriendRequest(Model model, @PathVariable Long id, Principal principal) {
-		String email = principal.getName();
-		User loggedInUser = usersService.getUserByEmail(email);
-		User requestedUser = usersService.getUser(id);
-		friendRequestService.addFriendRequest(loggedInUser,requestedUser);
-		logger.infoLog("The user with email: " 
-				+ loggedInUser.getEmail() 
-				+ " has send friend request to user with email: " 
-				+ requestedUser.getEmail() + ".");
-		return "redirect:/user/list";
 	}
 	
 	@RequestMapping("/user/list/update")

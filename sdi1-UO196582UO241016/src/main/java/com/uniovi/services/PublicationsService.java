@@ -23,5 +23,9 @@ public class PublicationsService {
 		return publicationRepository.findPublicationByOwner(user);		
 	}
 	
+	public void addPublication(Publication publication) {
+		publicationRepository.save(publication);
+	}
+	
 
 }
