@@ -3,6 +3,8 @@ package com.uniovi.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.uniovi.entities.Publication;
@@ -19,12 +21,16 @@ public class PublicationsService {
 		return publicationRepository.findAll();
 	}
 	
-	public List<Publication> getPublicationsByUser(User user){
-		return publicationRepository.findPublicationByOwner(user);		
+	public Page<Publication> getPublicationsByUser(User user, Pageable pageable){
+		return publicationRepository.findPublicationByOwner(user, pageable);		
 	}
 	
 	public void addPublication(Publication publication) {
 		publicationRepository.save(publication);
+	}
+
+	public Publication getPublicationById(Long id) {
+		return publicationRepository.findOne(id);
 	}
 	
 

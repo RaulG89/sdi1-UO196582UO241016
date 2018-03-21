@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/head" />
+<body>
+
+	<!-- Barra de Navegación superior -->
+	<nav th:replace="fragments/nav" />
+
+	<div class="container">
+		<h2 th:text="#{publication.details}"></h2>
+		<div class="panel panel-default">
+			<div class="panel-heading" th:text="#{title.message}"></div>
+			<div class="panel-body" th:text="${publication.title}"></div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading" th:text="#{date.message}">Fecha</div>
+			<div class="panel-body"
+				th:text="${#dates.format(publication.creationDate, 'dd-MMM-yyyy')}">
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading" th:text="#{description.message}">Descripcion</div>
+			<div class="panel-body" th:text="${publication.text}"></div>
+		</div>
+	</div>
+	<footer th:replace="fragments/footer" />
+
+</body>
+</html>

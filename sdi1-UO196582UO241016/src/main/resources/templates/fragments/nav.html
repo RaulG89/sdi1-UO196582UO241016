@@ -10,16 +10,25 @@
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
-				<li sec:authorize="isAuthenticated()"><a href="/home" th:text="#{home.message}"></a></li>
-				<li sec:authorize="!isAuthenticated()"><a href="/" th:text="#{home.message}"></a></li>
+				<li sec:authorize="isAuthenticated()"><a href="/home"
+					th:text="#{home.message}"></a></li>
+				<li sec:authorize="!isAuthenticated()"><a href="/"
+					th:text="#{home.message}"></a></li>
 				<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
 					href="/user/list" th:text="#{users.message}"></a></li>
 				<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
 					href="/user/friendRequests" th:text="#{requests.message}"></a></li>
 				<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
 					href="/user/friends" th:text="#{friends.message}"></a></li>
-				<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
-					href="/user/friends" th:text="#{friends.message}"></a></li>
+
+				<li sec:authorize="hasRole('ROLE_REGISTERED')" id="publications-menu" class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#" th:text="#{publications.message}" > Publicaciones <span
+						class="caret"></span>
+				</a>
+					<ul class="dropdown-menu">
+						<li><a href="/publication/add" th:text="#{add.publication.message}">Agregar publicacion</a></li>
+						<li><a href="/publication/list" th:text="#{show.mypublications.message}">Mis publicaciones</a></li>
+					</ul></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown"><a id="btnLanguage" href=" #"
@@ -47,7 +56,8 @@
 					th:text="#{login.message}"> <span
 						class="glyphicon glyphicon-log-in"></span> Identifícate
 				</a></li>
-				<li sec:authorize="isAuthenticated()"><a href="/logout" th:text="#{logout.message}"> <span
+				<li sec:authorize="isAuthenticated()"><a href="/logout"
+					th:text="#{logout.message}"> <span
 						class="glyphicon glyphicon-log-out"></span> Desconectar
 				</a></li>
 			</ul>
