@@ -16,7 +16,9 @@
 					href="/user/list" th:text="#{users.message}"></a></li>
 				<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
 					href="/user/friendRequests" th:text="#{requests.message}"></a></li>
-					<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
+				<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
+					href="/user/friends" th:text="#{friends.message}"></a></li>
+				<li sec:authorize="hasRole('ROLE_REGISTERED')"><a
 					href="/user/friends" th:text="#{friends.message}"></a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
