@@ -2,7 +2,6 @@ package com.uniovi.controllers;
 
 import java.security.Principal;
 import java.util.LinkedList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,8 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.uniovi.entities.Publication;
 import com.uniovi.entities.User;
@@ -34,11 +35,20 @@ public class PublicationsController {
 	private UsersService usersService;
 	
 	
-	@RequestMapping("/publication/createform")
-	public String createPublication(Model model, Principal principal) {
-		return null;
-		
+	@RequestMapping(value = "/publication/add", method = RequestMethod.GET)
+	public String createPublication(Model model) {
+		model.addAttribute("publication", new Publication());
+		return "publication/add";
 	}
+	
+	@RequestMapping(value = "/publication/add", method = RequestMethod.POST)
+	public String savePublication(@ModelAttribute Publication publication, Model model, Principal principal) {
+		String email = principal.getName();
+		User loggedInUser = usersService.getUserByEmail(email);
+		publication.setOwner(loggedInUser);
+		publicationService.addPublication(publication);
+		return "redirect:/publication/list";
+	}	
 	
 	@RequestMapping("/publication/list")
 	public String listPublications(Model model, Pageable pageable, Principal principal) {
