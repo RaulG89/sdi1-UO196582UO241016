@@ -2,6 +2,7 @@ package com.uniovi.controllers;
 
 import java.security.Principal;
 import java.util.LinkedList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -10,16 +11,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.uniovi.entities.Publication;
 import com.uniovi.entities.User;
 import com.uniovi.services.FriendshipService;
+import com.uniovi.services.LoggerService;
 import com.uniovi.services.PublicationsService;
+import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
+import com.uniovi.validators.AdminLoginFormValidator;
 
 @Controller
 public class PublicationsController {
@@ -33,6 +41,14 @@ public class PublicationsController {
 	
 	@Autowired
 	private UsersService usersService;
+	
+	private LoggerService logger = new LoggerService(this);
+	
+	@Autowired
+	private SecurityService securityService;
+	
+	@Autowired
+	private AdminLoginFormValidator adminLoginFormValidator;
 	
 	
 	@RequestMapping(value = "/publication/add", method = RequestMethod.GET)
@@ -67,7 +83,6 @@ public class PublicationsController {
 		String email = auth.getName();
 		User loggedInUser = usersService.getUserByEmail(email);
 		Publication publication = publicationService.getPublicationById(id);
-		//TODO Comprobar en esta condición que puede ser también amigo del usuario para que se muestren los detalles.
 		if(loggedInUser.equals(publication.getOwner()) || friendshipService.areFriends(loggedInUser, publication.getOwner())!=null) {
 			model.addAttribute("publication", publication);
 			return "publication/details";
@@ -86,5 +101,22 @@ public class PublicationsController {
 		return "publication/friendpublicationslist";
 	}
 	
+	@RequestMapping(value="/admin/login", method = RequestMethod.POST)
+	public String checkedAdminLogin(@ModelAttribute("user") @Validated User user, BindingResult result, Model model) {
+		adminLoginFormValidator.validate(user, result);
+		if (result.hasErrors()) {
+			logger.infoLog("Invalid Log-in.");
+			return "adminlogin";
+		}
+		securityService.autoLogin(user.getEmail(), user.getPassword());
+		logger.infoLog("The ADMIN user with email: " + user.getEmail() + " has accessed the system.");
+		return "redirect:/home";
+	}
+	
+	@RequestMapping(value="/admin/login", method = RequestMethod.GET)
+	public String adminLogin(Model model) {
+		model.addAttribute("user", new User());
+		return "adminlogin";
+	}
 	
 }

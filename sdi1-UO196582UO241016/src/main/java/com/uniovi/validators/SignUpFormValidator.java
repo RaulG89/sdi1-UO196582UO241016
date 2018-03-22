@@ -19,9 +19,9 @@ public class SignUpFormValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		User user = (User) target;
-		// TODO Añadir al fichero de i18
+		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "Error.empty");
-		// TODO Añadir al fichero de i18
+		
 		if (user.getEmail().length() < 15 || user.getEmail().length() > 30) {
 			errors.rejectValue("email", "Error.signup.email.length");
 		}
@@ -29,7 +29,7 @@ public class SignUpFormValidator implements Validator {
 		if(!user.getEmail().matches("[\\w\\d]+@[\\w\\d]+.[\\p{Lower}]{2,4}")) {
 			errors.rejectValue("email", "Error.signup.email.format");
 		}
-		// TODO Añadir al fichero de i18
+		
 		if (usersService.getUserByEmail(user.getEmail()) != null) {
 			errors.rejectValue("email", "Error.signup.email.duplicate");
 		}

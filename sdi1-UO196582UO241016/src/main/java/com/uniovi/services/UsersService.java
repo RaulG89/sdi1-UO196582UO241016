@@ -40,7 +40,9 @@ public class UsersService {
 
 	public void addUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		user.setRole(rolesService.getRoleByType("ROLE_REGISTERED"));
+		if(user.getRole()==null)
+			user.setRole(rolesService.getRoleByType("ROLE_REGISTERED"));
+		
 		usersRepository.save(user);
 	}
 
