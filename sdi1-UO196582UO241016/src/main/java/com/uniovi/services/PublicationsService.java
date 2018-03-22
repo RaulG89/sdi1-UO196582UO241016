@@ -1,5 +1,6 @@
 package com.uniovi.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,8 @@ public class PublicationsService {
 		return publicationRepository.findOne(id);
 	}
 	
+	public Date getDate() {
+		return new Date(System.currentTimeMillis());
+	}
 
 }
