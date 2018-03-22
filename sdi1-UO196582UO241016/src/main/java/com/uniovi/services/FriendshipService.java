@@ -23,6 +23,10 @@ public class FriendshipService {
 	public Page<Friendship> findByUser(Pageable pageable, User loggedInUser) {
 		return friendshipRepository.findByUser(pageable, loggedInUser);
 	}
+	
+	public Friendship areFriends(User loggedInUser, User user) {
+		return friendshipRepository.areFriends(loggedInUser, user);
+	}
 
 	
 

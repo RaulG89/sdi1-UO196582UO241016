@@ -21,6 +21,9 @@ public class InsertSampleDataService {
 	private FriendRequestService friendRequestService;
 	
 	@Autowired
+	private FriendshipService friendshipService;
+	
+	@Autowired
 	private PublicationsService publicationService;
 
 	@PostConstruct
@@ -68,7 +71,7 @@ public class InsertSampleDataService {
 		publicationService.addPublication(new Publication(user10, "Prueba Publicación", "Esta es una publicación de prueba", null));
 		
 		//FRIENDSHIPS
-//		friendshipService.addFriendship(user1, user2);
+		friendshipService.addFriendship(user1, user10);
 //		friendshipService.addFriendship(user4, user1);
 		
 		
