@@ -28,6 +28,8 @@ import com.uniovi.services.PublicationsService;
 import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
 import com.uniovi.validators.AdminLoginFormValidator;
+import com.uniovi.validators.AddPublicationFormValidator;
+
 
 @Controller
 public class PublicationsController {
@@ -50,18 +52,25 @@ public class PublicationsController {
 	@Autowired
 	private AdminLoginFormValidator adminLoginFormValidator;
 	
+	@Autowired
+	private AddPublicationFormValidator addPublicationFormValidator;
 	
-	@RequestMapping(value = "/publication/add", method = RequestMethod.GET)
+	@RequestMapping(value = "/publication/add")
 	public String createPublication(Model model) {
 		model.addAttribute("publication", new Publication());
 		return "publication/add";
 	}
 	
 	@RequestMapping(value = "/publication/add", method = RequestMethod.POST)
-	public String savePublication(@ModelAttribute Publication publication, Model model, Principal principal) {
+	public String savePublication(@ModelAttribute @Validated Publication publication, Model model, BindingResult result, Principal principal) {
+		addPublicationFormValidator.validate(publication, result);
+		if (result.hasErrors()) {
+			return "/publication/add";
+		}
 		String email = principal.getName();
 		User loggedInUser = usersService.getUserByEmail(email);
 		publication.setOwner(loggedInUser);
+		publication.setCreationDate(publicationService.getDate());
 		publicationService.addPublication(publication);
 		return "redirect:/publication/list";
 	}	
