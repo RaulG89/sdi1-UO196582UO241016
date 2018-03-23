@@ -15,16 +15,6 @@
 		<p>
 			<b th:inline="text"> [[${#httpServletRequest.remoteUser}]] </b>
 		</p>
-		<h4 th:text="#{findusers.message}">Encuentra usuarios registrados
-			por nombre o email.</h4>
-		<form class="navbar-form" action="/user/list">
-			<div class="form-group">
-				<input name="searchText" type="text" class="form-control" size="50"
-					th:placeholder="#{findusers.placeholder.message}">
-			</div>
-			<button type="submit" class="btn btn-default"
-				th:text="#{find.message}">Buscar</button>
-		</form>
 	</div>
 	<footer th:replace="fragments/footer" />
 </body>

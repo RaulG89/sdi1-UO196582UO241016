@@ -62,4 +62,8 @@ public class UsersService {
 		return usersRepository.searchNotFriendsNorRequestedUsers(user);
 	}
 
+	public Page<User> getAllUsers(Pageable pageable) {
+		return usersRepository.findAll(pageable);
+	}
+
 }

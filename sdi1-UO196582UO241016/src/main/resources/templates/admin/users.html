@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/head" />
+<body>
+	<!-- Barra de Navegación superior -->
+	<nav th:replace="fragments/nav" />
+	<div class="container">
+		<h2 th:text="#{users.message}"></h2>
+		<p th:text="#{users.info.message}"></p>
+		<div class="table-responsive">
+			<table class="table table-hover" th:fragment="tableUsers"
+				id="tableUsers">
+				<thead>
+					<tr>
+						<th th:text="#{name.message}">Nombre</th>
+						<th th:text="#{email.message}">E-mail</th>
+						<th class="col-md-1"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="user : ${usersList}">
+						<td th:text="${user.name}">Nombre del usuario</td>
+						<td th:text="${user.email}">ejemplo@mail.com</td>
+
+						<td>
+								<button type="submit" th:id="${'deleteUserButton'+user.id}" class="btn btn-primary" th:text="#{delete.message}">Eliminar</button>
+								<script th:inline="javascript">
+                                /*<![CDATA[*/
+                                    $( "#deleteUserButton[[${user.id}]]").click(function(){
+                                    	$.get("/admin/deleteuser/[[${user.id}]]",function(data) {
+											var numberPage = [[${param.page}]];
+											var urlUpdate = '/admin/users/update';
+											if ( numberPage != null ){
+												urlUpdate += "?page="+numberPage[0];
+											} 
+											$("#tableUsers").load(urlUpdate);
+										});
+                                    });
+                                /*]]>*/
+                            </script>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<footer th:replace="fragments/pagination" />
+	</div>
+	<footer th:replace="fragments/footer" />
+</body>
+</html>

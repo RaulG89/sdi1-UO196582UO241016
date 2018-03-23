@@ -1,6 +1,8 @@
 package com.uniovi.entities;
 
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,19 +35,19 @@ public class User {
 	@Transient
 	private String passwordConfirm;
 	
-	@OneToMany(mappedBy = "friend")
+	@OneToMany(mappedBy = "friend", cascade=CascadeType.ALL)
 	private Set<Friendship> userFriends;
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
 	private Set<Friendship> userIsFriend;
 
-	@OneToMany(mappedBy= "requestingUser")
+	@OneToMany(mappedBy= "requestingUser", cascade=CascadeType.ALL)
 	private Set<FriendRequest> friendRequestsSent;
 	
-	@OneToMany(mappedBy= "requestedUser")
+	@OneToMany(mappedBy= "requestedUser", cascade=CascadeType.ALL)
 	private Set<FriendRequest> friendRequestsReceived;
 	
-	@OneToMany(mappedBy= "owner")
+	@OneToMany(mappedBy= "owner", cascade=CascadeType.ALL)
 	private Set<Publication> publications;
 	
 	@ManyToOne

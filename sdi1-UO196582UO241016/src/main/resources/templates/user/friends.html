@@ -24,8 +24,8 @@
 						<td th:unless="${f.user.email} != ${loggedInUser.email}" th:text="${f.friend.name}">Nombre del alumno</td>
 						<td th:if="${f.user.email} != ${loggedInUser.email}" th:text="${f.user.email}">ejemplo@mail.com</td>
 						<td th:unless="${f.user.email} != ${loggedInUser.email}" th:text="${f.friend.email}">ejemplo@mail.com</td>
-						<td th:if="${f.user.email} != ${loggedInUser.email}"><a class="btn btn-primary" th:href="${'/publication/' + f.user.id}" role="button">Ver Publicaciones</a></td>
-						<td th:unless="${f.user.email} != ${loggedInUser.email}"><a class="btn btn-primary" th:href="${'/publication/' + f.friend.id}" role="button">Ver Publicaciones</a></td>
+						<td th:if="${f.user.email} != ${loggedInUser.email}"><a class="btn btn-primary" th:href="${'/publication/' + f.user.id}" th:text="#{show.publications}" role="button">Ver Publicaciones</a></td>
+						<td th:unless="${f.user.email} != ${loggedInUser.email}"><a class="btn btn-primary" th:href="${'/publication/' + f.friend.id}" th:text="#{show.publications}" role="button">Ver Publicaciones</a></td>
 					</tr>
 				</tbody>
 			</table>

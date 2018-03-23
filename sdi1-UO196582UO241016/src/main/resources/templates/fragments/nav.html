@@ -33,6 +33,13 @@
 						<li><a href="/publication/list"
 							th:text="#{show.mypublications.message}">Mis publicaciones</a></li>
 					</ul></li>
+				<li sec:authorize="hasRole('ROLE_ADMIN')" id="admin-menu"
+					class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#" th:text="#{adminmenu.message}">Admin Menu<span class="caret"></span>
+				</a>
+					<ul class="dropdown-menu">
+						<li><a href="/admin/users" th:text="#{show.users.message}">Listar Usuarios</a></li>
+					</ul></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown"><a id="btnLanguage" href=" #"

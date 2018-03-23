@@ -46,11 +46,6 @@ public class PublicationsController {
 	
 	private LoggerService logger = new LoggerService(this);
 	
-	@Autowired
-	private SecurityService securityService;
-	
-	@Autowired
-	private AdminLoginFormValidator adminLoginFormValidator;
 	
 	@Autowired
 	private AddPublicationFormValidator addPublicationFormValidator;
@@ -108,24 +103,6 @@ public class PublicationsController {
 		model.addAttribute("publicationsList", publications.getContent());
 		model.addAttribute("page", publications);
 		return "publication/friendpublicationslist";
-	}
-	
-	@RequestMapping(value="/admin/login", method = RequestMethod.POST)
-	public String checkedAdminLogin(@ModelAttribute("user") @Validated User user, BindingResult result, Model model) {
-		adminLoginFormValidator.validate(user, result);
-		if (result.hasErrors()) {
-			logger.infoLog("Invalid Log-in.");
-			return "adminlogin";
-		}
-		securityService.autoLogin(user.getEmail(), user.getPassword());
-		logger.infoLog("The ADMIN user with email: " + user.getEmail() + " has accessed the system.");
-		return "redirect:/home";
-	}
-	
-	@RequestMapping(value="/admin/login", method = RequestMethod.GET)
-	public String adminLogin(Model model) {
-		model.addAttribute("user", new User());
-		return "adminlogin";
 	}
 	
 }
