@@ -15,8 +15,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import com.uniovi.tests.pageobjects.PO_AdminLoginView;
 import com.uniovi.tests.pageobjects.PO_HomeView;
 import com.uniovi.tests.pageobjects.PO_JustLoggedInView;
+import com.uniovi.tests.pageobjects.PO_ListUsers;
 import com.uniovi.tests.pageobjects.PO_LoginView;
 import com.uniovi.tests.pageobjects.PO_Properties;
 import com.uniovi.tests.pageobjects.PO_RegisterView;
@@ -149,8 +151,12 @@ public class SocialNetworkTests {
 		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
 		// COmprobamos que entramos en la pagina privada
 		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		// Accedemos a la vista de usuarios
+		List<WebElement> elementos;
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/user/list')]");
+		elementos.get(0).click();
 		// Rellenamos el campo de busqueda
-		PO_JustLoggedInView.fillSearchText(driver, "Nacho");
+		PO_ListUsers.fillSearchText(driver, "Nacho");
 		// Comprobamos que aparece el deseado.
 		PO_View.checkElement(driver, "text", "Nacho");
 	}
@@ -226,7 +232,6 @@ public class SocialNetworkTests {
 		// Comprobamos que aparecen dos botones de aceptar, por lo tanto, existen 2
 		// peticiones de amistad pendientes.
 		elementos = PO_View.checkElement(driver, "free", "//td/following-sibling::*[1]");
-		int size = elementos.size();
 		assertTrue(elementos.size() == 2);
 	}
 
@@ -265,5 +270,86 @@ public class SocialNetworkTests {
 		elementos.get(0).click();
 		elementos = PO_View.checkElement(driver, "free", "//td[contains(text(), 'Nacho')]");
 		assertTrue(elementos.size() == 1);
+	}
+
+	// PR15 [LisPubVal] Acceso al listado de publicaciones desde un usuario en
+	// sesión
+	@Test
+	public void PR15_LisPubVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "anaponfe@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id, 'publications-menu')]/a");
+		elementos.get(0).click();
+		// Esperamos a aparezca la opción de añadir nota: //a[contains(@href,
+		// 'mark/add')]
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'publication/list')]");
+		// Pinchamos en agregar Nota.
+		elementos.get(0).click();
+		// Comprobamos que se lista la publicación
+		PO_View.checkElement(driver, "free", "//td[contains(text(), 'Prueba Publicación')]");
+	}
+
+	// PR16 [LisPubAmiVal] Listar las publicaciones de un usuario amigo
+	@Test
+	public void PR16_LisPubAmiVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/user/friends')]");
+		elementos.get(0).click();
+		// Hacemos click sobre el botón de las publicaciones del amigo con nombre Ana
+		elementos = PO_View.checkElement(driver, "free", "//td[contains(text(), 'Ana')]/following-sibling::*[2]");
+		elementos.get(0).click();
+		// Comprobamos que se lista la publicación
+		PO_View.checkElement(driver, "free", "//td[contains(text(), 'Prueba Publicación')]");
+	}
+
+	// PR17 [LisPubAmiInVal] Utilizando un acceso vía URL tratar de listar las
+	// publicaciones de un usuario que
+	// no sea amigo del usuario identificado en sesión.
+	@Test
+	public void PR17_LisPubAmiInVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "pocito@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		// Navegamos hacia la URL no permitida de visualización de las publicaciones del
+		// usuario 10, que no es amigo
+		driver.navigate().to("http://localhost:8090/publication/10");
+		// Comprobamos que te devuelve a la pagina home
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+	}
+
+	// PR20 [AdInVal] Inicio de sesión como administrador con datos válidos.
+	@Test
+	public void PR20_AdInVal() {
+		// Navegamos hacia la URL de inicio de sesion como admin
+		driver.navigate().to("http://localhost:8090/admin/login");
+		// Logeamos con el Admin
+		PO_AdminLoginView.fillForm(driver, "yeyas@gmail.com", "123456");
+		// Comprobamos que accede correctamente a la vista de los usuarios.
+		PO_AdminLoginView.checkLogIn(driver, PO_Properties.getSPANISH());
+	}
+
+	// PR21 [AdInInVal] Inicio de sesión como administrador con datos inválidos
+	// (usar los datos de un usuario
+	// que no tenga perfil administrador).
+	@Test
+	public void PR21_AdInInVal() {
+		// Navegamos hacia la URL de inicio de sesion como admin
+		driver.navigate().to("http://localhost:8090/admin/login");
+		// Logeamos con el Admin
+		PO_AdminLoginView.fillForm(driver, "nachas@gmail.com", "123456");
+		//Comprobamos si se ha producido un error al acceder
+		PO_AdminLoginView.checkInvalidLogIn(driver,PO_Properties.getSPANISH());
 	}
 }

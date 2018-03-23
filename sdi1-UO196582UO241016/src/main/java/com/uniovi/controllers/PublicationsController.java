@@ -17,47 +17,41 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.uniovi.entities.Publication;
 import com.uniovi.entities.User;
 import com.uniovi.services.FriendshipService;
 import com.uniovi.services.LoggerService;
 import com.uniovi.services.PublicationsService;
-import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
-import com.uniovi.validators.AdminLoginFormValidator;
 import com.uniovi.validators.AddPublicationFormValidator;
-
 
 @Controller
 public class PublicationsController {
 
-	
 	@Autowired
 	private PublicationsService publicationService;
-	
+
 	@Autowired
 	private FriendshipService friendshipService;
-	
+
 	@Autowired
 	private UsersService usersService;
-	
+
 	private LoggerService logger = new LoggerService(this);
-	
-	
+
 	@Autowired
 	private AddPublicationFormValidator addPublicationFormValidator;
-	
+
 	@RequestMapping(value = "/publication/add")
 	public String createPublication(Model model) {
 		model.addAttribute("publication", new Publication());
 		return "publication/add";
 	}
-	
+
 	@RequestMapping(value = "/publication/add", method = RequestMethod.POST)
-	public String savePublication(@ModelAttribute @Validated Publication publication, Model model, BindingResult result, Principal principal) {
+	public String savePublication(@ModelAttribute @Validated Publication publication, Model model, BindingResult result,
+			Principal principal) {
 		addPublicationFormValidator.validate(publication, result);
 		if (result.hasErrors()) {
 			return "/publication/add";
@@ -68,8 +62,8 @@ public class PublicationsController {
 		publication.setCreationDate(publicationService.getDate());
 		publicationService.addPublication(publication);
 		return "redirect:/publication/list";
-	}	
-	
+	}
+
 	@RequestMapping("/publication/list")
 	public String listPublications(Model model, Pageable pageable, Principal principal) {
 		String email = principal.getName();
@@ -80,29 +74,37 @@ public class PublicationsController {
 		model.addAttribute("page", publications);
 		return "publication/list";
 	}
-	
+
 	@RequestMapping("/publication/details/{id}")
-	public String getDetails(Model model, @PathVariable Long id){
+	public String getDetails(Model model, @PathVariable Long id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		User loggedInUser = usersService.getUserByEmail(email);
 		Publication publication = publicationService.getPublicationById(id);
-		if(loggedInUser.equals(publication.getOwner()) || friendshipService.areFriends(loggedInUser, publication.getOwner())!=null) {
+		if (loggedInUser.equals(publication.getOwner())
+				|| friendshipService.areFriends(loggedInUser, publication.getOwner()) != null) {
 			model.addAttribute("publication", publication);
 			return "publication/details";
-		} else {	
+		} else {
 			return "home";
 		}
 	}
-	
+
 	@RequestMapping("/publication/{id}")
 	public String getPublicationsByUser(Model model, @PathVariable Long id, Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User loggedInUser = usersService.getUserByEmail(email);
 		User user = usersService.getUser(id);
 		Page<Publication> publications = new PageImpl<Publication>(new LinkedList<Publication>());
 		publications = publicationService.getPublicationsByUser(user, pageable);
-		model.addAttribute("publicationsList", publications.getContent());
-		model.addAttribute("page", publications);
-		return "publication/friendpublicationslist";
+		if (friendshipService.areFriends(loggedInUser, user) != null) {
+			model.addAttribute("publicationsList", publications.getContent());
+			model.addAttribute("page", publications);
+			return "publication/friendpublicationslist";
+		} else {
+			return "home";
+		}
 	}
-	
+
 }

@@ -22,7 +22,7 @@
 					<tr th:each="publication : ${publicationsList}">
 						<td th:text="${#dates.format(publication.creationDate, 'dd-MMM-yyyy')}">Fecha</td>
 						<td th:text="${publication.title}">Titulo</td>
-						<td><a class="btn btn-primary" th:href="${'/publication/details/' + publication.id}"
+						<td><a class="btn btn-primary" th:id="${'detailsButton' + publication.id}" th:href="${'/publication/details/' + publication.id}"
 							role="button" th:text="#{details.message}"></a></td>
 					</tr>
 				</tbody>

@@ -44,7 +44,7 @@ public class AdminController {
 		}
 		securityService.autoLogin(user.getEmail(), user.getPassword());
 		logger.infoLog("The ADMIN user with email: " + user.getEmail() + " has accessed the system.");
-		return "redirect:/home";
+		return "redirect:/admin/users";
 	}
 	
 	@RequestMapping(value="/admin/login", method = RequestMethod.GET)
