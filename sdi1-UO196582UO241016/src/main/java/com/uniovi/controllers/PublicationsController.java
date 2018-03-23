@@ -1,5 +1,6 @@
 package com.uniovi.controllers;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.LinkedList;
 
@@ -12,11 +13,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.uniovi.entities.Publication;
 import com.uniovi.entities.User;
@@ -50,15 +52,18 @@ public class PublicationsController {
 	}
 
 	@RequestMapping(value = "/publication/add", method = RequestMethod.POST)
-	public String savePublication(@ModelAttribute @Validated Publication publication, Model model, BindingResult result,
-			Principal principal) {
-		addPublicationFormValidator.validate(publication, result);
-		if (result.hasErrors()) {
-			return "/publication/add";
-		}
+	public String savePublication(@ModelAttribute Publication publication
+			, BindingResult result, Principal principal,
+			@RequestParam(value="image", required=false) MultipartFile img) throws IOException {
+//		addPublicationFormValidator.validate(publication, result);
+//		if (result.hasErrors()) {
+//			return "/publication/add";
+//		}
 		String email = principal.getName();
 		User loggedInUser = usersService.getUserByEmail(email);
 		publication.setOwner(loggedInUser);
+		if (!img.isEmpty())
+			publication.setImage(img.getBytes());
 		publication.setCreationDate(publicationService.getDate());
 		publicationService.addPublication(publication);
 		return "redirect:/publication/list";

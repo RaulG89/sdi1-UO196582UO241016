@@ -2,10 +2,12 @@ package com.uniovi.entities;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.ManyToOne;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Publication {
@@ -31,11 +33,13 @@ public class Publication {
 	
 	private Date creationDate;
 	
-	private String image; 
+	@Lob
+	@Column(name ="image", nullable=true)
+	private byte[] image; 
 	
 	public Publication() { }
 
-	public Publication(User owner, String title, String text, String image) {
+	public Publication(User owner, String title, String text, byte[] image) {
 		super();
 		this.owner = owner;
 		this.title = title;
@@ -76,12 +80,14 @@ public class Publication {
 		this.creationDate = creationDate;
 	}
 
-	public String getImage() {
+	public byte[] getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(byte[] image) {
 		this.image = image;
 	}
+
+
 	
 }
