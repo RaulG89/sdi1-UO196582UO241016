@@ -66,6 +66,9 @@ public class PublicationsController {
 			publication.setImage(img.getBytes());
 		publication.setCreationDate(publicationService.getDate());
 		publicationService.addPublication(publication);
+		logger.infoLog("User with email \"" + loggedInUser.getEmail()
+				+ "\" has created a new publication with title \""
+				+ publication.getTitle() + "\"");
 		return "redirect:/publication/list";
 	}
 
@@ -77,6 +80,8 @@ public class PublicationsController {
 		publications = publicationService.getPublicationsByUser(loggedInUser, pageable);
 		model.addAttribute("publicationsList", publications.getContent());
 		model.addAttribute("page", publications);
+		logger.infoLog("User with email \"" + loggedInUser.getEmail()
+		+ "\" has listed all his own publications");
 		return "publication/list";
 	}
 
@@ -89,8 +94,13 @@ public class PublicationsController {
 		if (loggedInUser.equals(publication.getOwner())
 				|| friendshipService.areFriends(loggedInUser, publication.getOwner()) != null) {
 			model.addAttribute("publication", publication);
+			logger.infoLog("User with email \"" + loggedInUser.getEmail()
+			+ "\" has shown details of publication with title \""
+			+ publication.getTitle() + "\"");
 			return "publication/details";
 		} else {
+			logger.infoLog("User with email \"" + loggedInUser.getEmail()
+			+ "\" has tried to see the details of a publication he did not own.");
 			return "home";
 		}
 	}
@@ -106,8 +116,13 @@ public class PublicationsController {
 		if (friendshipService.areFriends(loggedInUser, user) != null) {
 			model.addAttribute("publicationsList", publications.getContent());
 			model.addAttribute("page", publications);
+			logger.infoLog("User with email \"" + loggedInUser.getEmail()
+			+ "\" has listed all his friends publications");
 			return "publication/friendpublicationslist";
 		} else {
+			logger.infoLog("User with email \"" + loggedInUser.getEmail()
+			+ "\" has tried to see the details of a publication that neither"
+			+ " he nor a friend was owner of.");
 			return "home";
 		}
 	}
