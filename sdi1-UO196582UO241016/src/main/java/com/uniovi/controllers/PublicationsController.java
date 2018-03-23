@@ -48,7 +48,8 @@ public class PublicationsController {
 	}
 	
 	@RequestMapping(value = "/publication/add", method = RequestMethod.POST)
-	public String savePublication(@ModelAttribute @Validated Publication publication, Model model, BindingResult result, Principal principal) {
+	public String savePublication(@ModelAttribute @Validated Publication publication
+			, Model model, BindingResult result, Principal principal) {
 		addPublicationFormValidator.validate(publication, result);
 		if (result.hasErrors()) {
 			return "/publication/add";
