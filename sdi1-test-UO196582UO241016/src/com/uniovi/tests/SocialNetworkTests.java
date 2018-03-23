@@ -284,10 +284,7 @@ public class SocialNetworkTests {
 		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id, 'publications-menu')]/a");
 		elementos.get(0).click();
-		// Esperamos a aparezca la opción de añadir nota: //a[contains(@href,
-		// 'mark/add')]
 		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'publication/list')]");
-		// Pinchamos en agregar Nota.
 		elementos.get(0).click();
 		// Comprobamos que se lista la publicación
 		PO_View.checkElement(driver, "free", "//td[contains(text(), 'Prueba Publicación')]");
@@ -349,7 +346,66 @@ public class SocialNetworkTests {
 		driver.navigate().to("http://localhost:8090/admin/login");
 		// Logeamos con el Admin
 		PO_AdminLoginView.fillForm(driver, "nachas@gmail.com", "123456");
-		//Comprobamos si se ha producido un error al acceder
-		PO_AdminLoginView.checkInvalidLogIn(driver,PO_Properties.getSPANISH());
+		// Comprobamos si se ha producido un error al acceder
+		PO_AdminLoginView.checkInvalidLogIn(driver, PO_Properties.getSPANISH());
 	}
+
+	// PR22 [AdLisUsrVal] Desde un usuario identificado en sesión como administrador
+	// listar a todos los
+	// usuarios de la aplicación.
+	@Test
+	public void PR22_AdListUsrVal() {
+		// Navegamos hacia la URL de inicio de sesion como admin
+		driver.navigate().to("http://localhost:8090/admin/login");
+		// Logeamos con el Admin
+		PO_AdminLoginView.fillForm(driver, "yeyas@gmail.com", "123456");
+		// Comprobamos que accede correctamente a la vista de los usuarios de la
+		// aplicación.
+		PO_AdminLoginView.checkLogIn(driver, PO_Properties.getSPANISH());
+		// Si queremos accedemos a la URL de Mostrar Usuarios.
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id, 'admin-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'admin/users')]");
+		elementos.get(0).click();
+		// Comprobamos que accede correctamente a la vista de los usuarios de la
+		// aplicación.
+		PO_AdminLoginView.checkLogIn(driver, PO_Properties.getSPANISH());
+	}
+
+	// PR23 [AdBorUsrVal] Desde un usuario identificado en sesión como administrador
+	// eliminar un usuario
+	// existente en la aplicación.
+	@Test
+	public void PR23_AdBorUsrVal() {
+		// Navegamos hacia la URL de inicio de sesion como admin
+		driver.navigate().to("http://localhost:8090/admin/login");
+		// Logeamos con el Admin
+		PO_AdminLoginView.fillForm(driver, "yeyas@gmail.com", "123456");
+		// Comprobamos que accede correctamente a la vista de los usuarios de la
+		// aplicación.
+		PO_AdminLoginView.checkLogIn(driver, PO_Properties.getSPANISH());
+		// Accedemos al botón de borrado del usuario
+		List<WebElement> elementos = PO_View.checkElement(driver, "free",
+				"//td[contains(text(), 'Martin')]/following-sibling::*[2]");
+		elementos.get(0).click();
+		// Comprobamos que no aparece el usuario Martin
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "Martin", PO_View.getTimeout());
+	}
+
+	// PR24 [AdBorUsrInVal] Intento de acceso vía URL al borrado de un usuario
+	// existente en la aplicación.
+	// Debe utilizarse un usuario identificado en sesión pero que no tenga perfil de
+	// administrador.
+	@Test
+	public void PR24_AdBorUsrInVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		driver.navigate().to("http://localhost:8090/admin/deleteuser/9");
+		PO_View.checkElement(driver, "text", "Whitelabel Error Page");
+	}
+
 }
