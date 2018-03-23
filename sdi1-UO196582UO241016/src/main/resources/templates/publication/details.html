@@ -22,7 +22,8 @@
 			<div class="panel-heading" th:text="#{description.message}">Descripcion</div>
 			<div class="panel-body" th:text="${publication.text}"></div>
 		</div>
-		<div class="panel panel-default">
+		<div class="panel panel-default"
+			th:if="${publication.image} != null">
 			<div class="panel-heading" th:text="#{image.message}">Image</div>
 			<div class="panel-body" >
 				<img th:src="@{'data:image/jpg;base64,' + *{T(org.springframework.util.Base64Utils).encodeToString(publication.image)}}" />
