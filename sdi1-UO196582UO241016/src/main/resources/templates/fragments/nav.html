@@ -22,13 +22,13 @@
 					href="/user/friends" th:text="#{friends.message}"></a></li>
 
 				<li sec:authorize="hasRole('ROLE_REGISTERED')"
-					id="publications-menu" class="dropdown"><a
+					id="publications-menu" class="dropdown"><a id = "btnPubli"
 					class="dropdown-toggle" data-toggle="dropdown" href="#"
 					th:text="#{publications.message}"> Publicaciones <span
 						class="caret"></span>
 				</a>
-					<ul class="dropdown-menu">
-						<li><a href="/publication/add"
+					<ul id="publiDropdownMenuButton" class="dropdown-menu">
+						<li><a id="addPubli"href="/publication/add"
 							th:text="#{add.publication.message}">Agregar publicacion</a></li>
 						<li><a href="/publication/list"
 							th:text="#{show.mypublications.message}">Mis publicaciones</a></li>

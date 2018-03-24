@@ -15,6 +15,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import com.uniovi.tests.pageobjects.PO_AddPublicationView;
 import com.uniovi.tests.pageobjects.PO_AdminLoginView;
 import com.uniovi.tests.pageobjects.PO_HomeView;
 import com.uniovi.tests.pageobjects.PO_JustLoggedInView;
@@ -31,11 +32,11 @@ public class SocialNetworkTests {
 
 	// En Windows (Debe ser la versión 46.0 y desactivar las actualizacioens
 	// automáticas)):
-	// static String PathFirefox =
-	// "E:\\Clase\\UNIOVI\\5_Quinto_Curso\\SDI\\PL_SDI_5\\Firefox46.0.win\\Firefox46.win\\FirefoxPortable.exe";
+	 static String PathFirefox =
+	 "E:\\Clase\\UNIOVI\\5_Quinto_Curso\\SDI\\PL_SDI_5\\Firefox46.0.win\\Firefox46.win\\FirefoxPortable.exe";
 	// static String PathFirefox =
 	// "C:\\Users\\UO241016\\Downloads\\PL_SDI_5\\PL_SDI_5\\Firefox46.0.win\\Firefox46.win\\FirefoxPortable.exe";
-	static String PathFirefox = "C:\\Users\\Marcos\\Downloads\\Firefox46.win\\FirefoxPortable.exe";
+	//static String PathFirefox = "C:\\Users\\Marcos\\Downloads\\Firefox46.win\\FirefoxPortable.exe";
 
 	// Común a Windows y a MACOSX
 	static WebDriver driver = getDriver(PathFirefox);
@@ -271,6 +272,26 @@ public class SocialNetworkTests {
 		elementos = PO_View.checkElement(driver, "free", "//td[contains(text(), 'Nacho')]");
 		assertTrue(elementos.size() == 1);
 	}
+	
+	// PR14 [PubVal] Crear una publicación con datos válidos.
+	@Test
+	public void PR14_PubVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "btnPubli", PO_View.getTimeout());
+		elementos.get(0).click();
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "publiDropdownMenuButton", PO_View.getTimeout());
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "addPubli", PO_View.getTimeout());
+		elementos.get(0).click();
+		PO_View.checkElement(driver, "text", "Añade una nueva publicación");
+		PO_AddPublicationView.fillForm(driver, "Titulo publicación válida", "Texto para una publicación válida");
+		elementos = PO_View.checkElement(driver, "free", "//td[contains(text(), 'Titulo publicación válida')]");
+		assertTrue(elementos.size() == 1);
+	}
 
 	// PR15 [LisPubVal] Acceso al listado de publicaciones desde un usuario en
 	// sesión
@@ -325,6 +346,55 @@ public class SocialNetworkTests {
 		// Comprobamos que te devuelve a la pagina home
 		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
 	}
+	
+	// PR18 [PubFot1Val] Crear una publicación con datos cálidos y una foto adjunta
+	@Test
+	public void PR18_PubFot1Val() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		//Seleccionamos el menú de añadir publicación
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "btnPubli", PO_View.getTimeout());
+		elementos.get(0).click();
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "publiDropdownMenuButton", PO_View.getTimeout());
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "addPubli", PO_View.getTimeout());
+		elementos.get(0).click();
+		//Comprobamos que estamso en el formulario de añadir publicación
+		PO_View.checkElement(driver, "text", "Añade una nueva publicación");
+		//Creamos la publicación
+		PO_AddPublicationView.fillForm(driver, "Titulo publicación válida con foto"
+				, "Texto para una publicación válida con foto"
+				, System.getProperty("user.dir") + "\\imagen.jpg");
+		elementos = PO_View.checkElement(driver, "free", "//td[contains(text(), 'Titulo publicación válida con foto')]");
+		assertTrue(elementos.size() == 1);
+	}
+	
+	// PR19 [PubFot2Val] Crear una publicación con datos cálidos y sin una foto adjunta
+	@Test
+	public void PR19_PubFot2Val() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "rulas@gmail.com", "123456");
+		// COmprobamos que entramos en la pagina privada
+		PO_JustLoggedInView.checkAuthenticated(driver, PO_Properties.getSPANISH());
+		//Seleccionamos el menú de añadir publicación
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "btnPubli", PO_View.getTimeout());
+		elementos.get(0).click();
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "publiDropdownMenuButton", PO_View.getTimeout());
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "addPubli", PO_View.getTimeout());
+		elementos.get(0).click();
+		//Comprobamos que estamso en el formulario de añadir publicación
+		PO_View.checkElement(driver, "text", "Añade una nueva publicación");
+		//Creamos la publicación
+		PO_AddPublicationView.fillForm(driver, "Titulo publicación válida sin foto", "Texto para una publicación válida sin foto");
+		elementos = PO_View.checkElement(driver, "free", "//td[contains(text(), 'Titulo publicación válida sin foto')]");
+		assertTrue(elementos.size() == 1);
+	}
+	
 
 	// PR20 [AdInVal] Inicio de sesión como administrador con datos válidos.
 	@Test
