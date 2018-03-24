@@ -20,26 +20,27 @@ import com.uniovi.services.UsersService;
 
 @Controller
 public class FriendshipController {
-	
+
 	@Autowired
 	private UsersService usersService;
-	
+
 	@Autowired
 	private FriendshipService friendshipService;
-	
+
 	private LoggerService logger = new LoggerService(this);
-	
+
 	@RequestMapping("/user/friends")
-	public String showFriends(Model model, Pageable pageable, Principal principal) {
+	public String showFriends(Model model, Pageable pageable,
+			Principal principal) {
 		String email = principal.getName();
 		User loggedInUser = usersService.getUserByEmail(email);
-		Page<Friendship> friends = new PageImpl<Friendship>(new LinkedList<Friendship>());
+		Page<Friendship> friends = new PageImpl<Friendship>(
+				new LinkedList<Friendship>());
 		friends = friendshipService.findByUser(pageable, loggedInUser);
 		model.addAttribute("loggedInUser", loggedInUser);
 		model.addAttribute("friends", friends.getContent());
 		model.addAttribute("page", friends);
-		logger.infoLog("The user with email: " 
-				+ loggedInUser.getEmail() 
+		logger.infoLog("The user with email: " + loggedInUser.getEmail()
 				+ " has listed their friend list.");
 		return "user/friends";
 	}

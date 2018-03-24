@@ -19,31 +19,35 @@ public class SignUpFormValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		User user = (User) target;
-		
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "Error.empty");
-		
+
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email",
+				"Error.empty");
+
 		if (user.getEmail().length() < 15 || user.getEmail().length() > 30) {
 			errors.rejectValue("email", "Error.signup.email.length");
 		}
 
-		if(!user.getEmail().matches("[\\w\\d]+@[\\w\\d]+.[\\p{Lower}]{2,4}")) {
+		if (!user.getEmail().matches("[\\w\\d]+@[\\w\\d]+.[\\p{Lower}]{2,4}")) {
 			errors.rejectValue("email", "Error.signup.email.format");
 		}
-		
+
 		if (usersService.getUserByEmail(user.getEmail()) != null) {
 			errors.rejectValue("email", "Error.signup.email.duplicate");
 		}
 		if (user.getName().length() < 4 || user.getName().length() > 24) {
 			errors.rejectValue("name", "Error.signup.name.length");
 		}
-		if (user.getLastName().length() < 5 || user.getLastName().length() > 24) {
+		if (user.getLastName().length() < 5
+				|| user.getLastName().length() > 24) {
 			errors.rejectValue("lastName", "Error.signup.lastName.length");
 		}
-		if (user.getPassword().length() < 5 || user.getPassword().length() > 24) {
+		if (user.getPassword().length() < 5
+				|| user.getPassword().length() > 24) {
 			errors.rejectValue("password", "Error.signup.password.length");
 		}
 		if (!user.getPasswordConfirm().equals(user.getPassword())) {
-			errors.rejectValue("passwordConfirm", "Error.signup.passwordConfirm.coincidence");
+			errors.rejectValue("passwordConfirm",
+					"Error.signup.passwordConfirm.coincidence");
 		}
 	}
 }

@@ -15,22 +15,23 @@ import com.uniovi.repositories.UsersRepository;
 
 @Service
 public class UsersService {
-	
+
 	@Autowired
 	private UsersRepository usersRepository;
-	
+
 	@Autowired
 	private RolesService rolesService;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@PostConstruct
 	public void init() {
 	}
 
 	public Page<User> getUsers(User user, Pageable pageable) {
-		Page<User> users = usersRepository.findAllUsersExceptLoggedInUser(user, pageable);
+		Page<User> users = usersRepository.findAllUsersExceptLoggedInUser(user,
+				pageable);
 		return users;
 	}
 
@@ -40,25 +41,27 @@ public class UsersService {
 
 	public void addUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		if(user.getRole()==null)
+		if (user.getRole() == null)
 			user.setRole(rolesService.getRoleByType("ROLE_REGISTERED"));
-		
+
 		usersRepository.save(user);
 	}
 
 	public void deleteUser(Long id) {
 		usersRepository.delete(id);
 	}
-	
+
 	public User getUserByEmail(String email) {
 		return usersRepository.findByEmail(email);
 	}
-	
-	public Page<User> searchUserByNameAndEmail(String searchText, Pageable pageable){		 		
-		return usersRepository.searchByNameAndEmail("%"+searchText+"%", pageable);
+
+	public Page<User> searchUserByNameAndEmail(String searchText,
+			Pageable pageable) {
+		return usersRepository.searchByNameAndEmail("%" + searchText + "%",
+				pageable);
 	}
-	
-	public List<User> searchNotFriendsNorRequestedUsers(User user){
+
+	public List<User> searchNotFriendsNorRequestedUsers(User user) {
 		return usersRepository.searchNotFriendsNorRequestedUsers(user);
 	}
 

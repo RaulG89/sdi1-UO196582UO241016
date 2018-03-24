@@ -52,13 +52,14 @@ public class PublicationsController {
 	}
 
 	@RequestMapping(value = "/publication/add", method = RequestMethod.POST)
-	public String savePublication(@ModelAttribute Publication publication
-			, BindingResult result, Principal principal,
-			@RequestParam(value="image", required=false) MultipartFile img) throws IOException {
-//		addPublicationFormValidator.validate(publication, result);
-//		if (result.hasErrors()) {
-//			return "/publication/add";
-//		}
+	public String savePublication(@ModelAttribute Publication publication,
+			BindingResult result, Principal principal,
+			@RequestParam(value = "image", required = false) MultipartFile img)
+			throws IOException {
+		// addPublicationFormValidator.validate(publication, result);
+		// if (result.hasErrors()) {
+		// return "/publication/add";
+		// }
 		String email = principal.getName();
 		User loggedInUser = usersService.getUserByEmail(email);
 		publication.setOwner(loggedInUser);
@@ -73,56 +74,63 @@ public class PublicationsController {
 	}
 
 	@RequestMapping("/publication/list")
-	public String listPublications(Model model, Pageable pageable, Principal principal) {
+	public String listPublications(Model model, Pageable pageable,
+			Principal principal) {
 		String email = principal.getName();
 		User loggedInUser = usersService.getUserByEmail(email);
-		Page<Publication> publications = new PageImpl<Publication>(new LinkedList<Publication>());
-		publications = publicationService.getPublicationsByUser(loggedInUser, pageable);
+		Page<Publication> publications = new PageImpl<Publication>(
+				new LinkedList<Publication>());
+		publications = publicationService.getPublicationsByUser(loggedInUser,
+				pageable);
 		model.addAttribute("publicationsList", publications.getContent());
 		model.addAttribute("page", publications);
 		logger.infoLog("User with email \"" + loggedInUser.getEmail()
-		+ "\" has listed all his own publications");
+				+ "\" has listed all his own publications");
 		return "publication/list";
 	}
 
 	@RequestMapping("/publication/details/{id}")
 	public String getDetails(Model model, @PathVariable Long id) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
 		String email = auth.getName();
 		User loggedInUser = usersService.getUserByEmail(email);
 		Publication publication = publicationService.getPublicationById(id);
-		if (loggedInUser.equals(publication.getOwner())
-				|| friendshipService.areFriends(loggedInUser, publication.getOwner()) != null) {
+		if (loggedInUser.equals(publication.getOwner()) || friendshipService
+				.areFriends(loggedInUser, publication.getOwner()) != null) {
 			model.addAttribute("publication", publication);
 			logger.infoLog("User with email \"" + loggedInUser.getEmail()
-			+ "\" has shown details of publication with title \""
-			+ publication.getTitle() + "\"");
+					+ "\" has shown details of publication with title \""
+					+ publication.getTitle() + "\"");
 			return "publication/details";
 		} else {
 			logger.infoLog("User with email \"" + loggedInUser.getEmail()
-			+ "\" has tried to see the details of a publication he did not own.");
+					+ "\" has tried to see the details of a publication he did not own.");
 			return "home";
 		}
 	}
 
 	@RequestMapping("/publication/{id}")
-	public String getPublicationsByUser(Model model, @PathVariable Long id, Pageable pageable) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	public String getPublicationsByUser(Model model, @PathVariable Long id,
+			Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
 		String email = auth.getName();
 		User loggedInUser = usersService.getUserByEmail(email);
 		User user = usersService.getUser(id);
-		Page<Publication> publications = new PageImpl<Publication>(new LinkedList<Publication>());
+		Page<Publication> publications = new PageImpl<Publication>(
+				new LinkedList<Publication>());
 		publications = publicationService.getPublicationsByUser(user, pageable);
 		if (friendshipService.areFriends(loggedInUser, user) != null) {
 			model.addAttribute("publicationsList", publications.getContent());
 			model.addAttribute("page", publications);
 			logger.infoLog("User with email \"" + loggedInUser.getEmail()
-			+ "\" has listed all his friends publications");
+					+ "\" has listed all his friends publications");
 			return "publication/friendpublicationslist";
 		} else {
 			logger.infoLog("User with email \"" + loggedInUser.getEmail()
-			+ "\" has tried to see the details of a publication that neither"
-			+ " he nor a friend was owner of.");
+					+ "\" has tried to see the details of a publication that neither"
+					+ " he nor a friend was owner of.");
 			return "home";
 		}
 	}

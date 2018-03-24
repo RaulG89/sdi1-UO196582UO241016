@@ -11,21 +11,26 @@ import com.uniovi.repositories.FriendRequestRepository;
 
 @Service
 public class FriendRequestService {
-	
+
 	@Autowired
 	FriendRequestRepository friendRequestRepository;
-	
-	public void addFriendRequest(User requestingUser, User requestedUser) {	
-		friendRequestRepository.save(new FriendRequest(requestingUser,requestedUser));
+
+	public void addFriendRequest(User requestingUser, User requestedUser) {
+		friendRequestRepository
+				.save(new FriendRequest(requestingUser, requestedUser));
 	}
-	
+
 	public void deleteFriendRequest(User requestingUser, User requestedUser) {
-		FriendRequest friendRequest = friendRequestRepository.findByRequestingUserRequestedUser(requestingUser, requestedUser);
+		FriendRequest friendRequest = friendRequestRepository
+				.findByRequestingUserRequestedUser(requestingUser,
+						requestedUser);
 		friendRequestRepository.delete(friendRequest.getId());
 	}
 
-	public Page<FriendRequest> getIncomingFriendRequestsByUser(Pageable pageable, User loggedInUser) {	
-		return friendRequestRepository.findByRequestedUser(pageable, loggedInUser);
+	public Page<FriendRequest> getIncomingFriendRequestsByUser(
+			Pageable pageable, User loggedInUser) {
+		return friendRequestRepository.findByRequestedUser(pageable,
+				loggedInUser);
 	}
 
 }

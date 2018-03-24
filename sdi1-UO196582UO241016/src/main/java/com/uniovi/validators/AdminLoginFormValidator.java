@@ -13,10 +13,10 @@ import com.uniovi.services.UsersService;
 
 @Component
 public class AdminLoginFormValidator implements Validator {
-	
+
 	@Autowired
 	private UsersService usersService;
-	
+
 	@Autowired
 	private RolesService rolesService;
 
@@ -28,16 +28,19 @@ public class AdminLoginFormValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		User user = (User) target;
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "Error.empty");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "Error.empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email",
+				"Error.empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password",
+				"Error.empty");
 		User aux = usersService.getUserByEmail(user.getEmail());
 		Role role2 = rolesService.getRoleByType("ROLE_ADMIN");
-		if(aux == null)
+		if (aux == null)
 			errors.rejectValue("email", "Error.adminlogin.invalidcredentials");
 		else {
 			Role role1 = aux.getRole();
-			if( role1 != role2 )
-			errors.rejectValue("email", "Error.adminlogin.email.privileges");
+			if (role1 != role2)
+				errors.rejectValue("email",
+						"Error.adminlogin.email.privileges");
 		}
 	}
 

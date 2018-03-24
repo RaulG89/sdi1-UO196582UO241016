@@ -23,36 +23,39 @@ import com.uniovi.validators.AdminLoginFormValidator;
 
 @Controller
 public class AdminController {
-	
+
 	@Autowired
 	private UsersService usersService;
-	
+
 	private LoggerService logger = new LoggerService(this);
-	
+
 	@Autowired
 	private SecurityService securityService;
-	
+
 	@Autowired
 	private AdminLoginFormValidator adminLoginFormValidator;
-	
-	@RequestMapping(value="/admin/login", method = RequestMethod.POST)
-	public String checkedAdminLogin(@ModelAttribute("user") @Validated User user, BindingResult result, Model model) {
+
+	@RequestMapping(value = "/admin/login", method = RequestMethod.POST)
+	public String checkedAdminLogin(
+			@ModelAttribute("user") @Validated User user, BindingResult result,
+			Model model) {
 		adminLoginFormValidator.validate(user, result);
 		if (result.hasErrors()) {
 			logger.infoLog("Invalid Log-in.");
 			return "adminlogin";
 		}
 		securityService.autoLogin(user.getEmail(), user.getPassword());
-		logger.infoLog("The ADMIN user with email: " + user.getEmail() + " has accessed the system.");
+		logger.infoLog("The ADMIN user with email: " + user.getEmail()
+				+ " has accessed the system.");
 		return "redirect:/admin/users";
 	}
-	
-	@RequestMapping(value="/admin/login", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/admin/login", method = RequestMethod.GET)
 	public String adminLogin(Model model) {
 		model.addAttribute("user", new User());
 		return "adminlogin";
 	}
-	
+
 	@RequestMapping("/admin/users")
 	public String listUsers(Model model, Pageable pageable) {
 		Page<User> users = new PageImpl<User>(new LinkedList<User>());
@@ -61,7 +64,7 @@ public class AdminController {
 		model.addAttribute("page", users);
 		return "admin/users";
 	}
-	
+
 	@RequestMapping("/admin/users/update")
 	public String updateList(Model model, Pageable pageable) {
 		Page<User> users = new PageImpl<User>(new LinkedList<User>());
@@ -69,7 +72,7 @@ public class AdminController {
 		model.addAttribute("usersList", users.getContent());
 		return "admin/users :: tableUsers";
 	}
-	
+
 	@RequestMapping("/admin/deleteuser/{id}")
 	public String deleteUser(Model model, @PathVariable Long id) {
 		usersService.deleteUser(id);

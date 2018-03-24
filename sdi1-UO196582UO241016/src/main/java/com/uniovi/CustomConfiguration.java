@@ -24,7 +24,8 @@ public class CustomConfiguration extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
-		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+		LocaleChangeInterceptor localeChangeInterceptor = 
+				new LocaleChangeInterceptor();
 		localeChangeInterceptor.setParamName("lang");
 		return localeChangeInterceptor;
 	}
@@ -35,8 +36,10 @@ public class CustomConfiguration extends WebMvcConfigurerAdapter {
 	}
 
 	@Override
-	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-		PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
+	public void addArgumentResolvers(
+			List<HandlerMethodArgumentResolver> argumentResolvers) {
+		PageableHandlerMethodArgumentResolver resolver = 
+				new PageableHandlerMethodArgumentResolver();
 		resolver.setFallbackPageable(new PageRequest(0, 5));
 		argumentResolvers.add(resolver);
 		super.addArgumentResolvers(argumentResolvers);
