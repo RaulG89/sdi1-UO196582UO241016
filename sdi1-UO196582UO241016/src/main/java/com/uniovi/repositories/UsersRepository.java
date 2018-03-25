@@ -20,6 +20,11 @@ public interface UsersRepository extends CrudRepository<User, Long>{
 			+ "OR LOWER(u.name) LIKE LOWER(?1))")
 	Page<User> searchByNameAndEmail(String searchText, Pageable pageable);
 	
+	/**Method that returns the list of users that aren't friends and don't have
+	 * friend requests to user in session.
+	 * @param user
+	 * @return
+	 */
 	@Query("SELECT u "
 			+ "FROM User u "
 			+ "WHERE u NOT IN ( "
